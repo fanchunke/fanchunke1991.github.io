@@ -1,0 +1,1012 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,网络编程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="引子在前几篇文章：SocketServer——网络通信服务器、BaseHTTPServer——实现Web服务器、SimpleHTTPServer——一个简单的HTTP服务器，我们介绍了Python标准库对于网络通信的支持，并且还介绍了标准库中的一些模块，例如TCPServer、UDPServer、BaseHTTPServer等。这些模块能够实现基础的网路通信服务，例如TCP/UDP层的通信、HTT">
+<meta name="keywords" content="Python,网络编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wsgiref包——符合WSGI标准的Web服务实现（一）">
+<meta property="og:url" content="http://yoursite.com/Python/wsgiref包——符合WSGI标准的Web服务实现（一）/index.html">
+<meta property="og:site_name" content="Learn Python">
+<meta property="og:description" content="引子在前几篇文章：SocketServer——网络通信服务器、BaseHTTPServer——实现Web服务器、SimpleHTTPServer——一个简单的HTTP服务器，我们介绍了Python标准库对于网络通信的支持，并且还介绍了标准库中的一些模块，例如TCPServer、UDPServer、BaseHTTPServer等。这些模块能够实现基础的网路通信服务，例如TCP/UDP层的通信、HTT">
+<meta property="og:updated_time" content="2017-04-11T13:23:09.789Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="wsgiref包——符合WSGI标准的Web服务实现（一）">
+<meta name="twitter:description" content="引子在前几篇文章：SocketServer——网络通信服务器、BaseHTTPServer——实现Web服务器、SimpleHTTPServer——一个简单的HTTP服务器，我们介绍了Python标准库对于网络通信的支持，并且还介绍了标准库中的一些模块，例如TCPServer、UDPServer、BaseHTTPServer等。这些模块能够实现基础的网路通信服务，例如TCP/UDP层的通信、HTT">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Python/wsgiref包——符合WSGI标准的Web服务实现（一）/"/>
+
+
+
+
+
+  <title> wsgiref包——符合WSGI标准的Web服务实现（一） | Learn Python </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Learn Python</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">learn python and coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/categories/Python" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-flask">
+          <a href="/categories/Flask" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Flask
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-web">
+          <a href="/categories/Web编程" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Web编程
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Python/wsgiref包——符合WSGI标准的Web服务实现（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fan Chunke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                wsgiref包——符合WSGI标准的Web服务实现（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-14T21:05:52+08:00">
+                2017-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/Python/wsgiref包——符合WSGI标准的Web服务实现（一）/" class="leancloud_visitors" data-flag-title="wsgiref包——符合WSGI标准的Web服务实现（一）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="引子"><a href="#引子" class="headerlink" title="引子"></a>引子</h3><p>在前几篇文章：<a href="/Python/SocketServer——网络通信服务器/" title="SocketServer——网络通信服务器">SocketServer——网络通信服务器</a>、<a href="/Python/BaseHTTPServer——实现Web服务器/" title="BaseHTTPServer——实现Web服务器">BaseHTTPServer——实现Web服务器</a>、<a href="/Python/SimpleHTTPServer——一个简单的HTTP服务器/" title="SimpleHTTPServer——一个简单的HTTP服务器">SimpleHTTPServer——一个简单的HTTP服务器</a>，我们介绍了Python标准库对于网络通信的支持，并且还介绍了标准库中的一些模块，例如<code>TCPServer</code>、<code>UDPServer</code>、<code>BaseHTTPServer</code>等。这些模块能够实现基础的网路通信服务，例如TCP/UDP层的通信、HTTP应用层的通信。</p>
+<a id="more"></a>
+<p>上述模块对于网络通信的实现，基本的流程是：</p>
+<ul>
+<li><p>创建一个服务器。例如TCP服务器、UDP服务器、HTTP服务器。服务器可以监听和接收请求；</p>
+</li>
+<li><p>创建请求处理程序。请求处理程序可以解析到达的请求，并发回一个响应。</p>
+</li>
+</ul>
+<p>以上流程基本上反映了Python标准库中关于网络通信的基本过程。服务器类和请求处理类的解耦，意味着很多应用可以使用某个现有的服务器类，而不需要其他任何的修改，只需要提供一个可以处理这些应用的请求处理类即可。但随着近些年网络编程越来越复杂，对于服务器网络通信提出了较大的挑战。以Web编程为例，挑战主要在于：</p>
+<ol>
+<li><p>服务器不再仅仅提供简单的、静态的HTML页面，更多的是要与丰富的Web应用进行相互通信。如果将请求处理程序的构建放在服务器端实现，那对于每个Web应用构建一个请求处理程序显然不现实；</p>
+</li>
+<li><p>如果将请求处理程序的构建放在开发Web应用的过程中，那无疑增加了Web应用程序开发的难度和复杂度，也是不太理想的。</p>
+</li>
+</ol>
+<p>为了解决这些问题，常用的做法是提供一个中间层，通常称为<code>网关接口</code>。<code>网关接口</code>在服务器和应用中间承担一个<code>“翻译官”</code>的角色。只要应用程序符合网关接口的标准，那么服务器就只要做好服务器的角色，应用程序只要做好应用程序的作用，服务器和应用程序之间的通信全靠<code>网关接口</code>来协调。常用的网关接口有<code>CGI</code>、<code>WSGI</code>，本文就以<code>WSGI网关接口</code>来对此进行说明。</p>
+<h3 id="WSGI网关接口"><a href="#WSGI网关接口" class="headerlink" title="WSGI网关接口"></a>WSGI网关接口</h3><p><code>WSGI</code> (Python Web Server Gateway Interface, Python Web服务器网关接口)是一个Web服务器和Web应用程序之间的标准化接口，用于增进应用程序在不同的Web服务器和框架之间的可移植性。关于该标准的官方说明可以参考<a href="http://www.python.org/dev/peps/pep-0333" target="_blank" rel="external">PEP333</a>。</p>
+<p><code>WSGI</code>的主要作用是在Web服务器和Web应用程序承担<code>“翻译官”</code>的角色。对于这一角色可以这样理解：</p>
+<ol>
+<li><p>Web服务器的责任在于监听和接收请求。在处理请求的时候调用<code>WSGI</code>提供的标准化接口，将请求的信息转给<code>WSGI</code>；</p>
+</li>
+<li><p><code>WSGI</code>的责任在于“中转”请求和响应信息。<code>WSGI</code>接收到Web服务器提供的请求信息后可以做一些处理，之后通过标准化接口调用Web应用，并将请求信息传递给Web应用。同时，<code>WSGI</code>还将会处理Web应用返回的响应信息，并通过服务器返回给客户端；</p>
+</li>
+<li><p>Web应用的责任在于接收请求信息，并且生成响应。</p>
+</li>
+</ol>
+<p>根据以上分析，要实现符合<code>WSGI</code>标准的Web服务，服务器和应用程序的设计就要符合<code>WSGI</code>规范。</p>
+<h3 id="WSGI规范"><a href="#WSGI规范" class="headerlink" title="WSGI规范"></a>WSGI规范</h3><p><code>WSGI</code>规范如下：</p>
+<ul>
+<li><p>服务器的请求处理程序中要调用符合<code>WSGI</code>规范的网关接口；</p>
+</li>
+<li><p>网关接口调用应用程序，并且要定义<code>start_response(status, headers)</code>函数，用于返回响应；</p>
+</li>
+<li><p>应用程序中实现一个函数或者一个可调用对象<code>webapp(environ,  start_response)</code>。其中<code>environ</code>是环境设置的字典，由服务器和<code>WSGI网关接口</code>设置，<code>start_response</code>是由网关接口定义的函数。</p>
+</li>
+</ul>
+<p>在Python标准库中，<code>wsgiref</code>包就是符合<code>WSGI</code>标准的Web服务实现。后面简单对<code>wsgiref</code>包进行介绍，以此来对符合<code>WSGI</code>标准的Web服务的实现过程进行梳理。</p>
+<h3 id="wsgiref包"><a href="#wsgiref包" class="headerlink" title="wsgiref包"></a>wsgiref包</h3><p><code>wsgiref</code>包为实现<code>WSGI</code>标准提供了一个参考，它可以作为独立的服务器测试和调试应用程序。在实际的生产环境中尽量不要使用。<code>wsgiref</code>包含有以下模块：</p>
+<ul>
+<li><p><strong><code>simple_server</code>模块</strong>  ——<code>simple_server</code>模块实现了可以运行单个<code>WSGI</code>应用的简单的HTTP服务器。</p>
+</li>
+<li><p><strong><code>headers</code>模块</strong>  ——管理响应首部的模块。</p>
+</li>
+<li><p><strong><code>handlers</code>模块</strong>  ——符合<code>WSGI</code>标准的Web服务网关接口实现。该模块包含了一些处理程序对象，用来设置<code>WSGI</code>执行环境，以便应用程序能够在其他的Web服务器中运行。</p>
+</li>
+<li><p><strong><code>validate</code>模块</strong>  ——“验证包装”模块，确保应用程序和服务器都能够按照<code>WSGI</code>标准进行操作。</p>
+</li>
+<li><p><strong><code>util</code>模块</strong>  ——一些有用的工具集。</p>
+</li>
+</ul>
+<p>以上模块暂时不做详细的介绍。本文剩余内容将<code>simple_server</code>模块单独拿出来，以其中的测试例子简单说明符合<code>WSGI</code>标准的Web服务器的实现过程。</p>
+<h3 id="simple-server——一个简单的符合WSGI规范的服务器"><a href="#simple-server——一个简单的符合WSGI规范的服务器" class="headerlink" title="simple_server——一个简单的符合WSGI规范的服务器"></a>simple_server——一个简单的符合<code>WSGI</code>规范的服务器</h3><p><code>wsgiref</code>包的<code>simple_server</code>模块实现了一个符合<code>WSGI</code>规范的服务器。测试代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    httpd = make_server(<span class="string">''</span>, <span class="number">8000</span>, demo_app)</div><div class="line">    sa = httpd.socket.getsockname()</div><div class="line">    <span class="keyword">print</span> <span class="string">"Serving HTTP on"</span>, sa[<span class="number">0</span>], <span class="string">"port"</span>, sa[<span class="number">1</span>], <span class="string">"..."</span></div><div class="line">    <span class="keyword">import</span> webbrowser</div><div class="line">    webbrowser.open(<span class="string">'http://localhost:8000/xyz?abc'</span>)</div><div class="line">    httpd.handle_request()  <span class="comment"># serve one request, then exit</span></div><div class="line">    httpd.server_close()</div></pre></td></tr></table></figure>
+<h4 id="1-创建HTTP服务器"><a href="#1-创建HTTP服务器" class="headerlink" title="1. 创建HTTP服务器"></a>1. 创建HTTP服务器</h4><p>上述测试代码中<code>httpd = make_server(&#39;&#39;, 8000, demo_app)</code>创建了一个HTTP服务器。</p>
+<p>其中<code>make_server</code>函数用来创建服务器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_server</span><span class="params">(</span></span></div><div class="line">    host, port, app, server_class=WSGIServer, handler_class=WSGIRequestHandler</div><div class="line">):</div><div class="line">    <span class="string">"""Create a new WSGI server listening on `host` and `port` for `app`"""</span></div><div class="line">    server = server_class((host, port), handler_class)</div><div class="line">    server.set_app(app)</div><div class="line">    <span class="keyword">return</span> server</div></pre></td></tr></table></figure>
+<p><code>make_server</code>函数使用<code>WSGIServer</code>类构建符合<code>WSGI</code>规范的HTTP服务器，使用<code>WSGIRequestHandler</code>类作为处理请求的类，使用<code>demo_app</code>作为一个Web应用。该函数返回一个服务器实例，并开始监听请求。可以通过<code>httpd.socket.getsockname()</code>获取服务器地址和端口号。</p>
+<h4 id="2-使用webbrowser模块创建请求"><a href="#2-使用webbrowser模块创建请求" class="headerlink" title="2. 使用webbrowser模块创建请求"></a>2. 使用<code>webbrowser</code>模块创建请求</h4><p>紧接着，测试例子导入<code>webbrowser</code>模块，使用函数创建了一个请求。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">webbrowser.open(<span class="string">'http://localhost:8000/xyz?abc'</span>)</div></pre></td></tr></table></figure>
+<h4 id="3-服务器处理请求"><a href="#3-服务器处理请求" class="headerlink" title="3. 服务器处理请求"></a>3. 服务器处理请求</h4><p>服务器通过<code>handle_request()</code>方法处理请求。关于处理请求的过程简单介绍如下：</p>
+<ul>
+<li><p><code>handle_request()</code>方法通过调用<code>get_request</code>、<code>verify_request</code>、<code>process_request</code>、<code>finish_request</code>等方法创建一个请求处理实例（该过程可以参考TCPServer、HTTPServer的实现过程）；</p>
+</li>
+<li><p>请求处理实例调用<code>handle()</code>方法处理请求。<code>handle()</code>在<code>WSGIRequestHandler</code>类中进行了重写。代码如下：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""Handle a single HTTP request"""</span></div><div class="line"></div><div class="line">    self.raw_requestline = self.rfile.readline(<span class="number">65537</span>)</div><div class="line">    <span class="keyword">if</span> len(self.raw_requestline) &gt; <span class="number">65536</span>:</div><div class="line">        self.requestline = <span class="string">''</span></div><div class="line">        self.request_version = <span class="string">''</span></div><div class="line">        self.command = <span class="string">''</span></div><div class="line">        self.send_error(<span class="number">414</span>)</div><div class="line">        <span class="keyword">return</span></div><div class="line"></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.parse_request(): <span class="comment"># An error code has been sent, just exit</span></div><div class="line">        <span class="keyword">return</span></div><div class="line"></div><div class="line">    handler = ServerHandler(</div><div class="line">        self.rfile, self.wfile, self.get_stderr(), self.get_environ()</div><div class="line">    )</div><div class="line">    handler.request_handler = self      <span class="comment"># backpointer for logging</span></div><div class="line">    handler.run(self.server.get_app())</div></pre></td></tr></table></figure>
+<p>上面<code>handle()</code>函数先解析了请求，之后创建了一个<code>WSGI</code>网关类实例<code>handler</code>，这个实例可以作为服务器和应用程序之间的接口存在。</p>
+<h4 id="4-WSGI网关的请求处理过程"><a href="#4-WSGI网关的请求处理过程" class="headerlink" title="4. WSGI网关的请求处理过程"></a>4. <code>WSGI</code>网关的请求处理过程</h4><p><code>WSGI</code>网关的定义在<code>handlers</code>模块。上一步骤中通过调用<code>WSGI</code>网关类实例<code>handler</code>的<code>run</code>方法，<code>WSGI</code>网关开始处理请求。</p>
+<p><code>run</code>方法的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self, application)</span>:</span></div><div class="line">    <span class="string">"""Invoke the application"""</span></div><div class="line">    <span class="comment"># Note to self: don't move the close()!  Asynchronous servers shouldn't</span></div><div class="line">    <span class="comment"># call close() from finish_response(), so if you close() anywhere but</span></div><div class="line">    <span class="comment"># the double-error branch here, you'll break asynchronous servers by</span></div><div class="line">    <span class="comment"># prematurely closing.  Async servers must return from 'run()' without</span></div><div class="line">    <span class="comment"># closing if there might still be output to iterate over.</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        self.setup_environ()</div><div class="line">        self.result = application(self.environ, self.start_response)</div><div class="line">        self.finish_response()</div><div class="line">    <span class="keyword">except</span>:</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            self.handle_error()</div><div class="line">        <span class="keyword">except</span>:</div><div class="line">            <span class="comment"># If we get an error handling an error, just give up already!</span></div><div class="line">            self.close()</div><div class="line">            <span class="keyword">raise</span>   <span class="comment"># ...and let the actual server figure it out.</span></div></pre></td></tr></table></figure>
+<p><code>run</code>方法的主要功能有：</p>
+<ul>
+<li><p>通过<code>setup_environ()</code>方法创建<code>WSGI</code>相关的环境；</p>
+</li>
+<li><p>调用<code>WSGI</code>应用的函数或者<code>WSGI</code>应用的可调用对象。本测试例子中的<code>WSGI</code>应用是一个简单的函数，其作用是将请求的<code>environ</code>信息打印出来。</p>
+</li>
+<li><p>调用<code>finish_response()</code>方法将<code>WSGI</code>应用返回的数据作为响应发回。</p>
+</li>
+</ul>
+<h4 id="5-关闭服务器"><a href="#5-关闭服务器" class="headerlink" title="5. 关闭服务器"></a>5. 关闭服务器</h4><p>请求结束后，服务器会调用一系列函数关闭请求连接。之后测试代码调用<code>server_close()</code>方法关闭服务器。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Fan Chunke WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.png" alt="Fan Chunke Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/网络编程/" rel="tag"># 网络编程</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Flask/Werkzeug库简介/" rel="next" title="Werkzeug库简介">
+                <i class="fa fa-chevron-left"></i> Werkzeug库简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Python/SimpleHTTPServer——一个简单的HTTP服务器/" rel="prev" title="SimpleHTTPServer——一个简单的HTTP服务器">
+                SimpleHTTPServer——一个简单的HTTP服务器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Fan Chunke" />
+          <p class="site-author-name" itemprop="name">Fan Chunke</p>
+           
+              <p class="site-description motion-element" itemprop="description">Learn Python and Programing</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/fanchunke1991" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/chunke-fan" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-share-alt"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引子"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WSGI网关接口"><span class="nav-number">2.</span> <span class="nav-text">WSGI网关接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WSGI规范"><span class="nav-number">3.</span> <span class="nav-text">WSGI规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wsgiref包"><span class="nav-number">4.</span> <span class="nav-text">wsgiref包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simple-server——一个简单的符合WSGI规范的服务器"><span class="nav-number">5.</span> <span class="nav-text">simple_server——一个简单的符合WSGI规范的服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建HTTP服务器"><span class="nav-number">5.1.</span> <span class="nav-text">1. 创建HTTP服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-使用webbrowser模块创建请求"><span class="nav-number">5.2.</span> <span class="nav-text">2. 使用webbrowser模块创建请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-服务器处理请求"><span class="nav-number">5.3.</span> <span class="nav-text">3. 服务器处理请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-WSGI网关的请求处理过程"><span class="nav-number">5.4.</span> <span class="nav-text">4. WSGI网关的请求处理过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-关闭服务器"><span class="nav-number">5.5.</span> <span class="nav-text">5. 关闭服务器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fan Chunke</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2130680"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("b7WB5bEbqIXJxQ7h1JE79N4P-gzGzoHsz", "Cjr3qeqgHtfEy7IAw9HgIdvD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

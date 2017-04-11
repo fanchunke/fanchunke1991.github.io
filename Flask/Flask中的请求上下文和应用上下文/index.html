@@ -1,0 +1,991 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Flask,Web编程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="在Flask中处理请求时，应用会生成一个“请求上下文”对象。整个请求的处理过程，都会在这个上下文对象中进行。这保证了请求的处理过程不被干扰。处理请求的具体代码如下： 12345def wsgi_app(self, environ, start_response):    with self.request_context(environ):        # with语句中生成一个`respons">
+<meta name="keywords" content="Flask,Web编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask中的请求上下文和应用上下文">
+<meta property="og:url" content="http://yoursite.com/Flask/Flask中的请求上下文和应用上下文/index.html">
+<meta property="og:site_name" content="Learn Python">
+<meta property="og:description" content="在Flask中处理请求时，应用会生成一个“请求上下文”对象。整个请求的处理过程，都会在这个上下文对象中进行。这保证了请求的处理过程不被干扰。处理请求的具体代码如下： 12345def wsgi_app(self, environ, start_response):    with self.request_context(environ):        # with语句中生成一个`respons">
+<meta property="og:updated_time" content="2017-04-11T14:04:18.161Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flask中的请求上下文和应用上下文">
+<meta name="twitter:description" content="在Flask中处理请求时，应用会生成一个“请求上下文”对象。整个请求的处理过程，都会在这个上下文对象中进行。这保证了请求的处理过程不被干扰。处理请求的具体代码如下： 12345def wsgi_app(self, environ, start_response):    with self.request_context(environ):        # with语句中生成一个`respons">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Flask/Flask中的请求上下文和应用上下文/"/>
+
+
+
+
+
+  <title> Flask中的请求上下文和应用上下文 | Learn Python </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Learn Python</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">learn python and coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/categories/Python" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-flask">
+          <a href="/categories/Flask" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Flask
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-web">
+          <a href="/categories/Web编程" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Web编程
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Flask/Flask中的请求上下文和应用上下文/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fan Chunke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Flask中的请求上下文和应用上下文
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-28T22:01:11+08:00">
+                2017-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/Flask/Flask中的请求上下文和应用上下文/" class="leancloud_visitors" data-flag-title="Flask中的请求上下文和应用上下文">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在Flask中处理请求时，应用会生成一个“请求上下文”对象。整个请求的处理过程，都会在这个上下文对象中进行。这保证了请求的处理过程不被干扰。处理请求的具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">wsgi_app</span><span class="params">(self, environ, start_response)</span>:</span></div><div class="line">    <span class="keyword">with</span> self.request_context(environ):</div><div class="line">        <span class="comment"># with语句中生成一个`response`对象</span></div><div class="line">        ...</div><div class="line">    <span class="keyword">return</span> response(environ, start_response)</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>在Flask 0.9版本之前，应用只有“请求上下文”对象，它包含了和请求处理相关的信息。同时Flask还根据<code>werkzeug.local</code>模块中实现的一种数据结构<code>LocalStack</code>用来存储“请求上下文”对象。这在<a href="/Flask/一个Flask应用运行过程剖析/" title="一个Flask应用运行过程剖析">一个Flask应用运行过程剖析</a>中有所介绍。在0.9版本中，Flask又引入了“应用上下文”的概念。本文主要Flask中的这两个“上下文”对象。</p>
+<h3 id="LocalStack"><a href="#LocalStack" class="headerlink" title="LocalStack"></a>LocalStack</h3><p>在介绍“请求上下文”和“应用上下文”之前，我们对<code>LocalStack</code>简要做一个回顾。在<a href="/Flask/Werkzeug库——local模块/" title="Werkzeug库——local模块">Werkzeug库——local模块</a>一文中，我们讲解了<code>werkzeug.local</code>模块中实现的三个类<code>Local</code>、<code>LocalStack</code>和<code>LocalProxy</code>。关于它们的概念和详细介绍，可以查看上面的文章。这里，我们用一个例子来说明Flask中使用的一种数据结构<code>LocalStack</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> werkzeug.local <span class="keyword">import</span> LocalStack</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> threading</div><div class="line"></div><div class="line"><span class="comment"># 创建一个`LocalStack`对象</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>local_stack = LocalStack()</div><div class="line"><span class="comment"># 查看local_stack中存储的信息</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>local_stack._local.__storage__</div><div class="line">&#123;&#125;</div><div class="line"></div><div class="line"><span class="comment"># 定义一个函数，这个函数可以向`LocalStack`中添加数据</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">(i)</span>:</span></div><div class="line">        local_stack.push(i)</div><div class="line"></div><div class="line"><span class="comment"># 使用3个线程运行函数`worker`</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</div><div class="line">        t = threading.Thread(target=worker, args=(i,))</div><div class="line">        t.start()</div><div class="line"></div><div class="line"><span class="comment"># 再次查看local_stack中存储的信息</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>local_stack._local.__storage__</div><div class="line">&#123;&lt;greenlet.greenlet at <span class="number">0x4bee5a0</span>&gt;: &#123;<span class="string">'stack'</span>: [<span class="number">2</span>]&#125;,</div><div class="line"> &lt;greenlet.greenlet at <span class="number">0x4bee638</span>&gt;: &#123;<span class="string">'stack'</span>: [<span class="number">1</span>]&#125;,</div><div class="line"> &lt;greenlet.greenlet at <span class="number">0x4bee6d0</span>&gt;: &#123;<span class="string">'stack'</span>: [<span class="number">0</span>]&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由上面的例子可以看出，存储在<code>LocalStack</code>中的信息以字典的形式存在：键为线程/协程的标识数值，值也是字典形式。每当有一个线程/协程上要将一个对象<code>push</code>进<code>LocalStack</code>栈中，会形成如上一个“键-值”对。这样的一种结构很好地实现了线程/协程的隔离，每个线程/协程都会根据自己线程/协程的标识数值确定存储在栈结构中的值。</p>
+<p><code>LocalStack</code>还实现了<code>push</code>、<code>pop</code>、<code>top</code>等方法。其中<code>top</code>方法永远指向栈顶的元素。栈顶的元素是指当前线程/协程中最后被推入栈中的元素，即<code>local_stack._local.stack[-1]</code>(注意，是<code>stack</code>键对应的对象中最后被推入的元素)。</p>
+<h3 id="请求上下文"><a href="#请求上下文" class="headerlink" title="请求上下文"></a>请求上下文</h3><p>Flask中所有的请求处理都在“请求上下文”中进行，在它设计之初便就有这个概念。由于0.9版本代码比较复杂，这里还是以0.1版本的代码为例进行说明。本质上这两个版本的“请求上下文”的运行原理没有变化，只是新版本增加了一些功能，这点在后面再进行解释。</p>
+<p><strong>请求上下文——0.1版本</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Flask v0.1</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">_RequestContext</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="string">"""The request context contains all request relevant information.  It is</span></div><div class="line">    created at the beginning of the request and pushed to the</div><div class="line">    `_request_ctx_stack` and removed at the end of it.  It will create the</div><div class="line">    URL adapter and request object for the WSGI environment provided.</div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, app, environ)</span>:</span></div><div class="line">        self.app = app</div><div class="line">        self.url_adapter = app.url_map.bind_to_environ(environ)</div><div class="line">        self.request = app.request_class(environ)</div><div class="line">        self.session = app.open_session(self.request)</div><div class="line">        self.g = _RequestGlobals()</div><div class="line">        self.flashes = <span class="keyword">None</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></div><div class="line">        _request_ctx_stack.push(self)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, exc_type, exc_value, tb)</span>:</span></div><div class="line">        <span class="comment"># do not pop the request stack if we are in debug mode and an</span></div><div class="line">        <span class="comment"># exception happened.  This will allow the debugger to still</span></div><div class="line">        <span class="comment"># access the request object in the interactive shell.</span></div><div class="line">        <span class="keyword">if</span> tb <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> <span class="keyword">not</span> self.app.debug:</div><div class="line">            _request_ctx_stack.pop()</div></pre></td></tr></table></figure></p>
+<p>由上面“请求上下文”的实现可知：</p>
+<ul>
+<li><p>“请求上下文”是一个上下文对象，实现了<code>__enter__</code>和<code>__exit__</code>方法。可以使用<code>with</code>语句构造一个上下文环境。</p>
+</li>
+<li><p>进入上下文环境时，<code>_request_ctx_stack</code>这个栈中会推入一个<code>_RequestContext</code>对象。这个栈结构就是上面讲的<code>LocalStack</code>栈。</p>
+</li>
+<li><p>推入栈中的<code>_RequestContext</code>对象有一些属性，包含了请求的的所有相关信息。例如<code>app</code>、<code>request</code>、<code>session</code>、<code>g</code>、<code>flashes</code>。还有一个<code>url_adapter</code>，这个对象可以进行URL匹配。</p>
+</li>
+<li><p>在<code>with</code>语句构造的上下文环境中可以进行请求处理。当退出上下文环境时，<code>_request_ctx_stack</code>这个栈会销毁刚才存储的上下文对象。</p>
+</li>
+</ul>
+<p>以上的运行逻辑使得请求的处理始终在一个上下文环境中，这保证了请求处理过程不被干扰，而且请求上下文对象保存在<code>LocalStack</code>栈中，也很好地实现了线程/协程的隔离。</p>
+<p>以下是一个简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># example - Flask v0.1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, _request_ctx_stack</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> threading</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>app = Flask(__name__)</div><div class="line"><span class="comment"># 先观察_request_ctx_stack中包含的信息</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>_request_ctx_stack._local.__storage__</div><div class="line">&#123;&#125;</div><div class="line"></div><div class="line"><span class="comment"># 创建一个函数，用于向栈中推入请求上下文</span></div><div class="line"><span class="comment"># 本例中不使用`with`语句</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></div><div class="line">        <span class="comment"># 使用应用的test_request_context()方法创建请求上下文</span></div><div class="line">        request_context = app.test_request_context()</div><div class="line">        _request_ctx_stack.push(request_context)</div><div class="line"></div><div class="line"><span class="comment"># 创建3个进程分别执行worker方法</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</div><div class="line">        t = threading.Thread(target=worker)</div><div class="line">        t.start()</div><div class="line"></div><div class="line"><span class="comment"># 再观察_request_ctx_stack中包含的信息</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>_request_ctx_stack._local.__storage__</div><div class="line">&#123;&lt;greenlet.greenlet at <span class="number">0x5e45df0</span>&gt;: &#123;<span class="string">'stack'</span>: [&lt;flask._RequestContext at <span class="number">0x710c668</span>&gt;]&#125;,</div><div class="line"> &lt;greenlet.greenlet at <span class="number">0x5e45e88</span>&gt;: &#123;<span class="string">'stack'</span>: [&lt;flask._RequestContext at <span class="number">0x7107f28</span>&gt;]&#125;,</div><div class="line"> &lt;greenlet.greenlet at <span class="number">0x5e45f20</span>&gt;: &#123;<span class="string">'stack'</span>: [&lt;flask._RequestContext at <span class="number">0x71077f0</span>&gt;]&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的结果显示：<code>_request_ctx_stack</code>中为每一个线程创建了一个“键-值”对，每一“键-值”对中包含一个请求上下文对象。如果使用<code>with</code>语句，在离开上下文环境时栈中销毁存储的上下文对象信息。</p>
+<p><strong>请求上下文——0.9版本</strong></p>
+<p>在0.9版本中，Flask引入了“应用上下文”的概念，这对“请求上下文”的实现有一定的改变。这个版本的“请求上下文”也是一个上下文对象。在使用<code>with</code>语句进入上下文环境后，<code>_request_ctx_stack</code>会存储这个上下文对象。不过与0.1版本相比，有以下几点改变：</p>
+<ul>
+<li><p>请求上下文实现了<code>push</code>、<code>pop</code>方法，这使得对于请求上下文的操作更加的灵活；</p>
+</li>
+<li><p>伴随着请求上下文对象的生成并存储在栈结构中，Flask还会生成一个“应用上下文”对象，而且“应用上下文”对象也会存储在另一个栈结构中去。这是两个版本最大的不同。</p>
+</li>
+</ul>
+<p>我们先看一下0.9版本相关的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Flask v0.9</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""Binds the request context to the current context."""</span></div><div class="line">    top = _request_ctx_stack.top</div><div class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span> <span class="keyword">and</span> top.preserved:</div><div class="line">        top.pop()</div><div class="line"></div><div class="line">    <span class="comment"># Before we push the request context we have to ensure that there</span></div><div class="line">    <span class="comment"># is an application context.</span></div><div class="line">    app_ctx = _app_ctx_stack.top</div><div class="line">    <span class="keyword">if</span> app_ctx <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">or</span> app_ctx.app != self.app:</div><div class="line">        app_ctx = self.app.app_context()</div><div class="line">        app_ctx.push()</div><div class="line">        self._implicit_app_ctx_stack.append(app_ctx)</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        self._implicit_app_ctx_stack.append(<span class="keyword">None</span>)</div><div class="line"></div><div class="line">    _request_ctx_stack.push(self)</div><div class="line"></div><div class="line">    self.session = self.app.open_session(self.request)</div><div class="line">    <span class="keyword">if</span> self.session <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">        self.session = self.app.make_null_session()</div></pre></td></tr></table></figure>
+<p>我们注意到，0.9版本的“请求上下文”的<code>pop</code>方法中，当要将一个“请求上下文”推入<code>_request_ctx_stack</code>栈中的时候，会先检查另一个栈<code>_app_ctx_stack</code>的栈顶是否存在“应用上下文”对象或者栈顶的“应用上下文”对象的应用是否是当前应用。如果不存在或者不是当前对象，Flask会自动先生成一个“应用上下文”对象，并将其推入<code>_app_ctx_stack</code>中。</p>
+<p>我们再看离开上下文时的相关代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Flask v0.9</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self, exc=None)</span>:</span></div><div class="line">    <span class="string">"""Pops the request context and unbinds it by doing that.  This will</span></div><div class="line">    also trigger the execution of functions registered by the</div><div class="line">    :meth:`~flask.Flask.teardown_request` decorator.</div><div class="line"></div><div class="line">    .. versionchanged:: 0.9</div><div class="line">       Added the `exc` argument.</div><div class="line">    """</div><div class="line">    app_ctx = self._implicit_app_ctx_stack.pop()</div><div class="line"></div><div class="line">    clear_request = <span class="keyword">False</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self._implicit_app_ctx_stack:</div><div class="line">        self.preserved = <span class="keyword">False</span></div><div class="line">        <span class="keyword">if</span> exc <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">            exc = sys.exc_info()[<span class="number">1</span>]</div><div class="line">        self.app.do_teardown_request(exc)</div><div class="line">        clear_request = <span class="keyword">True</span></div><div class="line"></div><div class="line">    rv = _request_ctx_stack.pop()</div><div class="line">    <span class="keyword">assert</span> rv <span class="keyword">is</span> self, <span class="string">'Popped wrong request context.  (%r instead of %r)'</span> \</div><div class="line">        % (rv, self)</div><div class="line"></div><div class="line">    <span class="comment"># get rid of circular dependencies at the end of the request</span></div><div class="line">    <span class="comment"># so that we don't require the GC to be active.</span></div><div class="line">    <span class="keyword">if</span> clear_request:</div><div class="line">        rv.request.environ[<span class="string">'werkzeug.request'</span>] = <span class="keyword">None</span></div><div class="line"></div><div class="line">    <span class="comment"># Get rid of the app as well if necessary.</span></div><div class="line">    <span class="keyword">if</span> app_ctx <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</div><div class="line">        app_ctx.pop(exc)</div></pre></td></tr></table></figure>
+<p>上面代码中的细节先不讨论。注意到当要离开以上“请求上下文”环境的时候，Flask会先将“请求上下文”对象从<code>_request_ctx_stack</code>栈中销毁，之后会根据实际的情况确定销毁“应用上下文”对象。</p>
+<p>以下还是以一个简单的例子进行说明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># example - Flask v0.9</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, _request_ctx_stack, _app_ctx_stack</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>app = Flask(__name__)</div><div class="line"></div><div class="line"><span class="comment"># 先检查两个栈的内容</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>_request_ctx_stack._local.__storage__</div><div class="line">&#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>_app_ctx_stack._local.__storage__</div><div class="line">&#123;&#125;</div><div class="line"></div><div class="line"><span class="comment"># 生成一个请求上下文对象</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>request_context = app.test_request_context()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>request_context.push()</div><div class="line"></div><div class="line"><span class="comment"># 请求上下文推入栈后，再次查看两个栈的内容</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>_request_ctx_stack._local.__storage__</div><div class="line">&#123;&lt;greenlet.greenlet at <span class="number">0x6eb32a8</span>&gt;: &#123;<span class="string">'stack'</span>: [&lt;RequestContext <span class="string">'http://localhost/'</span> [GET] of __main__&gt;]&#125;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>_app_ctx_stack._local.__storage__</div><div class="line">&#123;&lt;greenlet.greenlet at <span class="number">0x6eb32a8</span>&gt;: &#123;<span class="string">'stack'</span>: [&lt;flask.ctx.AppContext at <span class="number">0x5c96a58</span>&gt;]&#125;&#125;</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>request_context.pop()</div><div class="line"></div><div class="line"><span class="comment"># 销毁请求上下文时，再次查看两个栈的内容</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>_request_ctx_stack._local.__storage__</div><div class="line">&#123;&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>_app_ctx_stack._local.__storage__</div><div class="line">&#123;&#125;</div></pre></td></tr></table></figure>
+<h3 id="应用上下文"><a href="#应用上下文" class="headerlink" title="应用上下文"></a>应用上下文</h3><p>上部分中简单介绍了“应用上下文”和“请求上下文”的关系。那什么是“应用上下文”呢？我们先看一下它的类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppContext</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="string">"""The application context binds an application object implicitly</span></div><div class="line">    to the current thread or greenlet, similar to how the</div><div class="line">    :class:`RequestContext` binds request information.  The application</div><div class="line">    context is also implicitly created if a request context is created</div><div class="line">    but the application is not on top of the individual application</div><div class="line">    context.</div><div class="line">    """</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, app)</span>:</span></div><div class="line">        self.app = app</div><div class="line">        self.url_adapter = app.create_url_adapter(<span class="keyword">None</span>)</div><div class="line"></div><div class="line">        <span class="comment"># Like request context, app contexts can be pushed multiple times</span></div><div class="line">        <span class="comment"># but there a basic "refcount" is enough to track them.</span></div><div class="line">        self._refcnt = <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""Binds the app context to the current context."""</span></div><div class="line">        self._refcnt += <span class="number">1</span></div><div class="line">        _app_ctx_stack.push(self)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self, exc=None)</span>:</span></div><div class="line">        <span class="string">"""Pops the app context."""</span></div><div class="line">        self._refcnt -= <span class="number">1</span></div><div class="line">        <span class="keyword">if</span> self._refcnt &lt;= <span class="number">0</span>:</div><div class="line">            <span class="keyword">if</span> exc <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">                exc = sys.exc_info()[<span class="number">1</span>]</div><div class="line">            self.app.do_teardown_appcontext(exc)</div><div class="line">        rv = _app_ctx_stack.pop()</div><div class="line">        <span class="keyword">assert</span> rv <span class="keyword">is</span> self, <span class="string">'Popped wrong app context.  (%r instead of %r)'</span> \</div><div class="line">            % (rv, self)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span></div><div class="line">        self.push()</div><div class="line">        <span class="keyword">return</span> self</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, exc_type, exc_value, tb)</span>:</span></div><div class="line">        self.pop(exc_value)</div></pre></td></tr></table></figure>
+<p>由以上代码可以看出：“应用上下文”也是一个上下文对象，可以使用<code>with</code>语句构造一个上下文环境，它也实现了<code>push</code>、<code>pop</code>等方法。“应用上下文”的构造函数也和“请求上下文”类似，都有<code>app</code>、<code>url_adapter</code>等属性。“应用上下文”存在的一个主要功能就是确定请求所在的应用。</p>
+<p>然而，以上的论述却又让人产生这样的疑问：既然“请求上下文”中也包含<code>app</code>等和当前应用相关的信息，那么只要调用<code>_request_ctx_stack.top.app</code>或者魔法<code>current_app</code>就可以确定请求所在的应用了，那为什么还需要“应用上下文”对象呢？对于单应用单请求来说，使用“请求上下文”确实就可以了。然而，Flask的设计理念之一就是多应用的支持。当在一个应用的请求上下文环境中，需要嵌套处理另一个应用的相关操作时，“请求上下文”显然就不能很好地解决问题了。如何让请求找到“正确”的应用呢？我们可能会想到，可以再增加一个请求上下文环境，并将其推入<code>_request_ctx_stack</code>栈中。由于两个上下文环境的运行是独立的，不会相互干扰，所以通过调用<code>_request_ctx_stack.top.app</code>或者魔法<code>current_app</code>也可以获得当前上下文环境正在处理哪个应用。这种办法在一定程度上可行，但是如果对于第二个应用的处理不涉及到相关请求，那也就无从谈起“请求上下文”。</p>
+<p>为了应对这个问题，Flask中将应用相关的信息单独拿出来，形成一个“应用上下文”对象。这个对象可以和“请求上下文”一起使用，也可以单独拿出来使用。不过有一点需要注意的是：在创建“请求上下文”时一定要创建一个“应用上下文”对象。有了“应用上下文”对象，便可以很容易地确定当前处理哪个应用，这就是魔法<code>current_app</code>。在0.1版本中，<code>current_app</code>是对<code>_request_ctx_stack.top.app</code>的引用，而在0.9版本中<code>current_app</code>是对<code>_app_ctx_stack.top.app</code>的引用。</p>
+<p>下面以一个多应用的例子进行说明：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"># example - Flask v0.9</div><div class="line">&gt;&gt;&gt; from flask import Flask, _request_ctx_stack, _app_ctx_stack</div><div class="line"># 创建两个Flask应用</div><div class="line">&gt;&gt;&gt; app = Flask(__name__)</div><div class="line">&gt;&gt;&gt; app2 = Flask(__name__)</div><div class="line"># 先查看两个栈中的内容</div><div class="line">&gt;&gt;&gt; _request_ctx_stack._local.__storage__</div><div class="line">&#123;&#125;</div><div class="line">&gt;&gt;&gt; _app_ctx_stack._local.__storage__</div><div class="line">&#123;&#125;</div><div class="line"># 构建一个app的请求上下文环境，在这个环境中运行app2的相关操作</div><div class="line">&gt;&gt;&gt; with app.test_request_context():</div><div class="line">        print "Enter app's Request Context:"</div><div class="line">        print _request_ctx_stack._local.__storage__</div><div class="line">        print _app_ctx_stack._local.__storage__</div><div class="line">        print</div><div class="line">        with app2.app_context():</div><div class="line">            print "Enter app2's App Context:"</div><div class="line">            print _request_ctx_stack._local.__storage__</div><div class="line">            print _app_ctx_stack._local.__storage__</div><div class="line">            print</div><div class="line">            # do something</div><div class="line">        print "Exit app2's App Context:"</div><div class="line">        print _request_ctx_stack._local.__storage__</div><div class="line">        print _app_ctx_stack._local.__storage__</div><div class="line">        print</div><div class="line"># Result</div><div class="line">Enter app's Request Context:</div><div class="line">&#123;&lt;greenlet.greenlet object at 0x000000000727A178&gt;: &#123;'stack': [&lt;RequestContext 'http://localhost/' [GET] of __main__&gt;]&#125;&#125;</div><div class="line">&#123;&lt;greenlet.greenlet object at 0x000000000727A178&gt;: &#123;'stack': [&lt;flask.ctx.AppContext object at 0x0000000005DD0DD8&gt;]&#125;&#125;</div><div class="line"></div><div class="line">Enter app2's App Context:</div><div class="line">&#123;&lt;greenlet.greenlet object at 0x000000000727A178&gt;: &#123;'stack': [&lt;RequestContext 'http://localhost/' [GET] of __main__&gt;]&#125;&#125;</div><div class="line">&#123;&lt;greenlet.greenlet object at 0x000000000727A178&gt;: &#123;'stack': [&lt;flask.ctx.AppContext object at 0x0000000005DD0DD8&gt;, &lt;flask.ctx.AppContext object at 0x0000000007313198&gt;]&#125;&#125;</div><div class="line"></div><div class="line">Exit app2's App Context</div><div class="line">&#123;&lt;greenlet.greenlet object at 0x000000000727A178&gt;: &#123;'stack': [&lt;RequestContext 'http://localhost/' [GET] of __main__&gt;]&#125;&#125;</div><div class="line">&#123;&lt;greenlet.greenlet object at 0x000000000727A178&gt;: &#123;'stack': [&lt;flask.ctx.AppContext object at 0x0000000005DD0DD8&gt;]&#125;&#125;</div></pre></td></tr></table></figure>
+<p>在以上的例子中：</p>
+<ul>
+<li><p>我们首先创建了两个Flask应用<code>app</code>和<code>app2</code>；</p>
+</li>
+<li><p>接着我们构建了一个<code>app</code>的请求上下文环境。当进入这个环境中时，这时查看两个栈的内容，发现两个栈中已经有了当前请求的请求上下文对象和应用上下文对象。并且栈顶的元素都是<code>app</code>的请求上下文和应用上下文；</p>
+</li>
+<li><p>之后，我们再在这个环境中嵌套<code>app2</code>的应用上下文。当进入<code>app2</code>的应用上下文环境时，两个上下文环境便隔离开来，此时再查看两个栈的内容，发现<code>_app_ctx_stack</code>中推入了<code>app2</code>的应用上下文对象，并且栈顶指向它。这时在<code>app2</code>的应用上下文环境中，<code>current_app</code>便会一直指向<code>app2</code>；</p>
+</li>
+<li><p>当离开<code>app2</code>的应用上下文环境，<code>_app_ctx_stack</code>栈便会销毁<code>app2</code>的应用上下文对象。这时查看两个栈的内容，发现两个栈中只有<code>app</code>的请求的请求上下文对象和应用上下文对象。</p>
+</li>
+<li><p>最后，离开<code>app</code>的请求上下文环境后，两个栈便会销毁<code>app</code>的请求的请求上下文对象和应用上下文对象，栈为空。</p>
+</li>
+</ul>
+<h3 id="与上下文对象有关的“全局变量”"><a href="#与上下文对象有关的“全局变量”" class="headerlink" title="与上下文对象有关的“全局变量”"></a>与上下文对象有关的“全局变量”</h3><p>在Flask中，为了更加方便地处理一些变量，特地提出了“全局变量”的概念。这些全局变量有：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Flask v0.9</span></div><div class="line">_request_ctx_stack = LocalStack()</div><div class="line">_app_ctx_stack = LocalStack()</div><div class="line">current_app = LocalProxy(_find_app)</div><div class="line">request = LocalProxy(partial(_lookup_object, <span class="string">'request'</span>))</div><div class="line">session = LocalProxy(partial(_lookup_object, <span class="string">'session'</span>))</div><div class="line">g = LocalProxy(partial(_lookup_object, <span class="string">'g'</span>))</div><div class="line"></div><div class="line"><span class="comment"># 辅助函数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_lookup_object</span><span class="params">(name)</span>:</span></div><div class="line">    top = _request_ctx_stack.top</div><div class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">        <span class="keyword">raise</span> RuntimeError(<span class="string">'working outside of request context'</span>)</div><div class="line">    <span class="keyword">return</span> getattr(top, name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_find_app</span><span class="params">()</span>:</span></div><div class="line">    top = _app_ctx_stack.top</div><div class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">        <span class="keyword">raise</span> RuntimeError(<span class="string">'working outside of application context'</span>)</div><div class="line">    <span class="keyword">return</span> top.app</div></pre></td></tr></table></figure>
+<p>可以看出，Flask中使用的一些“全局变量”，包括<code>current_app</code>、<code>request</code>、<code>session</code>、<code>g</code>等都来自于上下文对象。其中<code>current_app</code>一直指向<code>_app_ctx_stack</code>栈顶的“应用上下文”对象，是对当前应用的引用。而<code>request</code>、<code>session</code>、<code>g</code>等一直指向<code>_request_ctx_stack</code>栈顶的“请求上下文”对象，分别引用请求上下文的<code>request</code>、<code>session</code>和<code>g</code>。不过，从 Flask 0.10 起，对象 g 存储在应用上下文中而不再是请求上下文中。</p>
+<p>另外一个问题，在形成这些“全局变量”的时候，使用了<code>werkzeug.local</code>模块的<code>LocalProxy</code>类。之所以要用该类，主要是为了动态地实现对栈顶元素的引用。如果不使用这个类，在生成上述“全局变量”的时候，它们因为指向栈顶元素，而栈顶元素此时为<code>None</code>，所以这些变量也会被设置为<code>None</code>常量。后续即使有上下文对象被推入栈中，相应的“全局变量”也不会发生改变。为了动态地实现对栈顶元素的引用，这里必须使用<code>werkzeug.local</code>模块的<code>LocalProxy</code>类。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Fan Chunke WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.png" alt="Fan Chunke Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flask/" rel="tag"># Flask</a>
+          
+            <a href="/tags/Web编程/" rel="tag"># Web编程</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Flask/Flask中的蓝图管理/" rel="prev" title="Flask中的蓝图管理">
+                Flask中的蓝图管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Fan Chunke" />
+          <p class="site-author-name" itemprop="name">Fan Chunke</p>
+           
+              <p class="site-description motion-element" itemprop="description">Learn Python and Programing</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/fanchunke1991" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/chunke-fan" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-share-alt"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#LocalStack"><span class="nav-number">1.</span> <span class="nav-text">LocalStack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求上下文"><span class="nav-number">2.</span> <span class="nav-text">请求上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用上下文"><span class="nav-number">3.</span> <span class="nav-text">应用上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与上下文对象有关的“全局变量”"><span class="nav-number">4.</span> <span class="nav-text">与上下文对象有关的“全局变量”</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fan Chunke</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2130680"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("b7WB5bEbqIXJxQ7h1JE79N4P-gzGzoHsz", "Cjr3qeqgHtfEy7IAw9HgIdvD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

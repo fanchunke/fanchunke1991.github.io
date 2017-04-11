@@ -1,0 +1,991 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Flask,Web编程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Flask是一个轻量级的Web框架。虽然是轻量级的，但是对于组件一个大型的、模块化应用也是能够实现的，“蓝图”就是这样一种实现。对于模块化应用的实现，在Flask 0.2版本中进行了设计。本文暂时不对“蓝图”做详细的介绍，而是先从0.2版本中的Module类的实现讲起。其实，“蓝图”的实现和Module类的实现很相似。">
+<meta name="keywords" content="Flask,Web编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask中模块化应用的实现">
+<meta property="og:url" content="http://yoursite.com/Flask/Flask中模块化应用的实现/index.html">
+<meta property="og:site_name" content="Learn Python">
+<meta property="og:description" content="Flask是一个轻量级的Web框架。虽然是轻量级的，但是对于组件一个大型的、模块化应用也是能够实现的，“蓝图”就是这样一种实现。对于模块化应用的实现，在Flask 0.2版本中进行了设计。本文暂时不对“蓝图”做详细的介绍，而是先从0.2版本中的Module类的实现讲起。其实，“蓝图”的实现和Module类的实现很相似。">
+<meta property="og:updated_time" content="2017-04-11T13:57:36.067Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flask中模块化应用的实现">
+<meta name="twitter:description" content="Flask是一个轻量级的Web框架。虽然是轻量级的，但是对于组件一个大型的、模块化应用也是能够实现的，“蓝图”就是这样一种实现。对于模块化应用的实现，在Flask 0.2版本中进行了设计。本文暂时不对“蓝图”做详细的介绍，而是先从0.2版本中的Module类的实现讲起。其实，“蓝图”的实现和Module类的实现很相似。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Flask/Flask中模块化应用的实现/"/>
+
+
+
+
+
+  <title> Flask中模块化应用的实现 | Learn Python </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Learn Python</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">learn python and coding</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-python">
+          <a href="/categories/Python" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Python
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-flask">
+          <a href="/categories/Flask" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Flask
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-web">
+          <a href="/categories/Web编程" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            Web编程
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Flask/Flask中模块化应用的实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fan Chunke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Flask中模块化应用的实现
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-26T21:55:55+08:00">
+                2017-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/Flask/Flask中模块化应用的实现/" class="leancloud_visitors" data-flag-title="Flask中模块化应用的实现">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Flask是一个轻量级的Web框架。虽然是轻量级的，但是对于组件一个大型的、模块化应用也是能够实现的，“蓝图”就是这样一种实现。对于模块化应用的实现，在Flask 0.2版本中进行了设计。本文暂时不对“蓝图”做详细的介绍，而是先从0.2版本中的<code>Module</code>类的实现讲起。其实，“蓝图”的实现和<code>Module</code>类的实现很相似。</p>
+<a id="more"></a>
+<h3 id="为什么实现模块化应用"><a href="#为什么实现模块化应用" class="headerlink" title="为什么实现模块化应用"></a>为什么实现模块化应用</h3><p>对于大型应用而言，随着功能的不断增加，整个应用的规模也会扩大。按照一定的规则将应用的不同部分进行模块化，不仅能够使整个应用逻辑清晰，也易于维护。例如，在Flask中，你也许想像如下构建一个简单的项目：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/myapplication</div><div class="line">    /__init__.py</div><div class="line">    /views</div><div class="line">        /__init__.py</div><div class="line">        /admin.py</div><div class="line">        /frontend.py</div></pre></td></tr></table></figure>
+<p>以上目录结构中，我们将之前的Flask单文件修改成了一个应用包，所有的视图函数都在<code>views</code>下，并且按照功能分为了<code>admin</code>和<code>frontend</code>两个部分。为了实现这种模块化应用的构建，在0.2版本中Flask实现了<code>Module</code>类。这个类实例可以通过注册的方式，在Flask应用创建后添加进应用。</p>
+<p><code>Module</code>类实现了一系列的方法：</p>
+<ul>
+<li><p><code>route(rule, **options)</code></p>
+</li>
+<li><p><code>add_url_rule(rule, endpoint, view_func=None, **options)</code></p>
+</li>
+<li><p><code>before_request(f)</code></p>
+</li>
+<li><p><code>before_app_request(f)</code></p>
+</li>
+<li><p><code>after_request(f)</code></p>
+</li>
+<li><p><code>after_app_request(f)</code></p>
+</li>
+<li><p><code>context_processor(f)</code></p>
+</li>
+<li><p><code>app_context_processor(f)</code></p>
+</li>
+<li><p><code>_record(func)</code></p>
+</li>
+</ul>
+<p>以上方法除了<code>add_url_rule</code>和<code>_record</code>外，都可以作为装饰器在自己的模块中使用，这些装饰器都返回一个函数。通过调用<code>_record</code>方法，可以将装饰器返回的函数放到<code>_register_events</code>中。当Flask应用创建之后，通过运行<code>_register_events</code>列表中的函数，可以将这个模块注册到应用中去。</p>
+<h3 id="Flask应用怎么注册一个Module"><a href="#Flask应用怎么注册一个Module" class="headerlink" title="Flask应用怎么注册一个Module"></a>Flask应用怎么注册一个<code>Module</code></h3><p>以下我们以一个例子来说明Flask应用怎么注册一个<code>Module</code>。</p>
+<h4 id="1-项目结构"><a href="#1-项目结构" class="headerlink" title="1. 项目结构"></a>1. 项目结构</h4><p>这个简单的例子项目结构如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/myapplication</div><div class="line">    /__init__.py</div><div class="line">    /app.py</div><div class="line">    /views</div><div class="line">        /__init__.py</div><div class="line">        /admin.py</div><div class="line">        /blog.py</div></pre></td></tr></table></figure>
+<p><code>admin.py</code>和<code>blog.py</code>两个模块的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># admin.py</span></div><div class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Module</div><div class="line"></div><div class="line">admin = Module(__name__)</div><div class="line"></div><div class="line"><span class="meta">@admin.route('/')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"This is admin page!"</span></div><div class="line"></div><div class="line"><span class="meta">@admin.route('/profile')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">profile</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"This is profile page."</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># blog.py</span></div><div class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Module</div><div class="line"></div><div class="line">blog = Module(__name__)</div><div class="line"></div><div class="line"><span class="meta">@blog.route('/')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"This is my blog!"</span></div><div class="line"></div><div class="line"><span class="meta">@blog.route('/article/&lt;int:id&gt;')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">article</span><span class="params">(id)</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"The article id is %d."</span> % id</div></pre></td></tr></table></figure>
+<p>以上两个模块中，我们首先分别创建了一个<code>Module</code>类，然后像写一般的视图函数一样，为每个模块增加一些规则。之后，可以在创建Flask应用的时候将这些模块引入，就可以注册了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># app.py</span></div><div class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</div><div class="line"><span class="keyword">from</span> views.admin <span class="keyword">import</span> admin</div><div class="line"><span class="keyword">from</span> views.blog <span class="keyword">import</span> blog</div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line"><span class="meta">@app.route('/')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">return</span> <span class="string">"This is my app."</span></div><div class="line"></div><div class="line">app.register_module(blog, url_prefix=<span class="string">'/blog'</span>)</div><div class="line">app.register_module(admin, url_prefix=<span class="string">'/admin'</span>)</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    <span class="keyword">from</span> werkzeug.serving <span class="keyword">import</span> run_simple</div><div class="line">    run_simple(<span class="string">'localhost'</span>, <span class="number">5000</span>, app)</div></pre></td></tr></table></figure>
+<p>在<code>app.py</code>中：</p>
+<ul>
+<li><p>我们首先引入了<code>admin</code>和<code>blog</code>两个<code>Module</code>对象；</p>
+</li>
+<li><p>之后，我们创建了一个Flask应用<code>app</code>，并且为这个应用增加了一个视图函数；</p>
+</li>
+<li><p>为了注册模块，我们调用了应用的<code>register_module</code>方法；</p>
+</li>
+<li><p>最后，从<code>werkzeug.serving</code>中我们调用<code>run_simple</code>方法，用来创建一个本地的服务器用于测试这个Flask应用。</p>
+</li>
+</ul>
+<p>根据以上的步骤，我们就可以测试这个应用。分别以<code>/blog</code>和<code>/admin</code>为URL前缀，就可以访问<code>blog</code>和<code>admin</code>两个模块了。</p>
+<h4 id="2-注册Module时发生了什么"><a href="#2-注册Module时发生了什么" class="headerlink" title="2. 注册Module时发生了什么"></a>2. 注册<code>Module</code>时发生了什么</h4><p>根据上面的例子，只要简单的调用Flask应用的<code>register_module</code>方法，就可以注册一个<code>Module</code>了。关于<code>register_module</code>方法的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">register_module</span><span class="params">(self, module, **options)</span>:</span></div><div class="line">    <span class="string">"""Registers a module with this application.  The keyword argument</span></div><div class="line">    of this function are the same as the ones for the constructor of the</div><div class="line">    :class:`Module` class and will override the values of the module if</div><div class="line">    provided.</div><div class="line">    """</div><div class="line">    options.setdefault(<span class="string">'url_prefix'</span>, module.url_prefix)</div><div class="line">    state = _ModuleSetupState(self, **options)</div><div class="line">    <span class="keyword">for</span> func <span class="keyword">in</span> module._register_events:</div><div class="line">        func(state)</div></pre></td></tr></table></figure>
+<p>通过以上代码可以发现：</p>
+<ul>
+<li><p>可以通过增加<code>url_prefix</code>来区分不同的<code>Module</code>，这在<code>app</code>注册<code>admin</code>和<code>blog</code>时我们已经看到了；</p>
+</li>
+<li><p>在注册时，我们创建了一个<code>_ModuleSetupState</code>的类，这个类接收Flask应用和一些参数生成一个<code>state</code>实例。这个实例反映了当前Flask应用的状态。</p>
+</li>
+<li><p>前面在讲到<code>Module</code>类的时候，我们讲到<code>Module</code>未注册时会将自己模块的一些功能实现都放在<code>_register_events</code>列表中，这些功能实现都是函数形式。当需要将模块注册到某一应用上时，只需要传递关于这个应用信息的参数即可，即就是上面的<code>state</code>实例。这样，通过运行函数，可以讲一些属性绑定到当前应用上去。</p>
+</li>
+</ul>
+<p>以上面例子中不同模块的URL绑定来讲，通过注册，应用<code>app</code>现形成了如下的URL“地图”：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; app.url_map</div><div class="line">Map([&lt;Rule '/admin/profile' (HEAD, GET) -&gt; admin.profile&gt;,</div><div class="line">     &lt;Rule '/admin/' (HEAD, GET) -&gt; admin.index&gt;,</div><div class="line">     &lt;Rule '/blog/' (HEAD, GET) -&gt; blog.index&gt;,</div><div class="line">     &lt;Rule '/' (HEAD, GET) -&gt; index&gt;,</div><div class="line">     &lt;Rule '/blog/article/&lt;id&gt;' (HEAD, GET) -&gt; blog.article&gt;,</div><div class="line">     &lt;Rule '/static/&lt;filename&gt;' (HEAD, GET) -&gt; static&gt;]</div><div class="line">    )</div><div class="line"></div><div class="line">&gt;&gt;&gt; app.url_map._rules_by_endpoint</div><div class="line">&#123;'admin.index': [&lt;Rule '/admin/' (HEAD, GET) -&gt; admin.index&gt;],</div><div class="line"> 'admin.profile': [&lt;Rule '/admin/profile' (HEAD, GET) -&gt; admin.profile&gt;],</div><div class="line"> 'blog.article': [&lt;Rule '/blog/article/&lt;id&gt;' (HEAD, GET) -&gt; blog.article&gt;],</div><div class="line"> 'blog.index': [&lt;Rule '/blog/' (HEAD, GET) -&gt; blog.index&gt;],</div><div class="line"> 'index': [&lt;Rule '/' (HEAD, GET) -&gt; index&gt;],</div><div class="line"> 'static': [&lt;Rule '/static/&lt;filename&gt;' (HEAD, GET) -&gt; static&gt;]</div><div class="line">&#125;</div><div class="line"></div><div class="line">&gt;&gt;&gt; app.view_functions</div><div class="line">&#123;'admin.index': &lt;function views.admin.index&gt;,</div><div class="line"> 'admin.profile': &lt;function views.admin.profile&gt;,</div><div class="line"> 'blog.article': &lt;function views.blog.article&gt;,</div><div class="line"> 'blog.index': &lt;function views.blog.index&gt;,</div><div class="line"> 'index': &lt;function __main__.index&gt;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样，就可以把不同模块的URL规则放在一起，并在<code>endpoint</code>和视图函数之间形成对应关系。关于Flask应用中URL处理，可以参考：<a href="/Flask/Flask应用中的URL处理/" title="Flask应用中的URL处理">Flask应用中的URL处理</a>。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Fan Chunke WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.png" alt="Fan Chunke Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flask/" rel="tag"># Flask</a>
+          
+            <a href="/tags/Web编程/" rel="tag"># Web编程</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Flask/Flask中的蓝图管理/" rel="next" title="Flask中的蓝图管理">
+                <i class="fa fa-chevron-left"></i> Flask中的蓝图管理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Flask/Flask应用中的URL处理/" rel="prev" title="Flask应用中的URL处理">
+                Flask应用中的URL处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Fan Chunke" />
+          <p class="site-author-name" itemprop="name">Fan Chunke</p>
+           
+              <p class="site-description motion-element" itemprop="description">Learn Python and Programing</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/fanchunke1991" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/chunke-fan" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-share-alt"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么实现模块化应用"><span class="nav-number">1.</span> <span class="nav-text">为什么实现模块化应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flask应用怎么注册一个Module"><span class="nav-number">2.</span> <span class="nav-text">Flask应用怎么注册一个Module</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-项目结构"><span class="nav-number">2.1.</span> <span class="nav-text">1. 项目结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-注册Module时发生了什么"><span class="nav-number">2.2.</span> <span class="nav-text">2. 注册Module时发生了什么</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fan Chunke</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2130680"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("b7WB5bEbqIXJxQ7h1JE79N4P-gzGzoHsz", "Cjr3qeqgHtfEy7IAw9HgIdvD");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
