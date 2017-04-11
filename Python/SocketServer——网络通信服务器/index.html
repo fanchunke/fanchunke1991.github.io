@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Python,网络编程," />
 
 
 
@@ -87,15 +87,17 @@
 
 
 
-<meta name="description" content="Learn Python and Programing">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Learn Python">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="SocketServer是Python标准库中的一个模块，其作用是创建网络服务器。SocketServer模块定义了一些类来处理诸如TCP、UDP、UNIX流和UNIX数据报之上的同步网络请求。   SocketServer模块处理网络请求的功能，可以通过两个主要的类来实现：一个是服务器类，一个是请求处理类。  服务器类 处理通信问题，如监听一个套接字并接收连接等； 请求处理类 处理“协议”问题，">
+<meta name="keywords" content="Python,网络编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SocketServer——网络通信服务器">
+<meta property="og:url" content="http://yoursite.com/Python/SocketServer——网络通信服务器/index.html">
 <meta property="og:site_name" content="Learn Python">
-<meta property="og:description" content="Learn Python and Programing">
+<meta property="og:description" content="SocketServer是Python标准库中的一个模块，其作用是创建网络服务器。SocketServer模块定义了一些类来处理诸如TCP、UDP、UNIX流和UNIX数据报之上的同步网络请求。   SocketServer模块处理网络请求的功能，可以通过两个主要的类来实现：一个是服务器类，一个是请求处理类。  服务器类 处理通信问题，如监听一个套接字并接收连接等； 请求处理类 处理“协议”问题，">
+<meta property="og:updated_time" content="2017-04-11T09:10:03.382Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Learn Python">
-<meta name="twitter:description" content="Learn Python and Programing">
+<meta name="twitter:title" content="SocketServer——网络通信服务器">
+<meta name="twitter:description" content="SocketServer是Python标准库中的一个模块，其作用是创建网络服务器。SocketServer模块定义了一些类来处理诸如TCP、UDP、UNIX流和UNIX数据报之上的同步网络请求。   SocketServer模块处理网络请求的功能，可以通过两个主要的类来实现：一个是服务器类，一个是请求处理类。  服务器类 处理通信问题，如监听一个套接字并接收连接等； 请求处理类 处理“协议”问题，">
 
 
 
@@ -123,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/Python/SocketServer——网络通信服务器/"/>
 
 
 
 
 
-  <title> Learn Python </title>
+  <title> SocketServer——网络通信服务器 | Learn Python </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -164,9 +166,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-   page-home 
- ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -279,149 +279,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/uncategorized/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Fan Chunke">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn Python">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/uncategorized/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-11T13:16:37+08:00">
-                2017-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/uncategorized/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
 
   
 
@@ -451,10 +311,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/Python/SocketServer——网络通信服务器/" itemprop="url">
-                  SocketServer——网络通信服务器
-                </a>
+                SocketServer——网络通信服务器
               
             
           </h1>
@@ -538,56 +395,161 @@
       
 
       
-        
-          <p>SocketServer是Python标准库中的一个模块，其作用是创建网络服务器。SocketServer模块定义了一些类来处理诸如TCP、UDP、UNIX流和UNIX数据报之上的同步网络请求。  </p>
+        <p>SocketServer是Python标准库中的一个模块，其作用是创建网络服务器。SocketServer模块定义了一些类来处理诸如TCP、UDP、UNIX流和UNIX数据报之上的同步网络请求。  </p>
 <p>SocketServer模块处理网络请求的功能，可以通过两个主要的类来实现：一个是服务器类，一个是请求处理类。</p>
 <ul>
 <li><strong>服务器类</strong> 处理通信问题，如监听一个套接字并接收连接等；</li>
 <li><strong>请求处理类</strong> 处理“协议”问题，如解释到来的数据、处理数据并把数据发回给客户端等。</li>
 </ul>
 <p>这种实现将服务器的实现过程和请求处理的实现过程解耦，这意味着我们可以将不同的服务器实现和请求处理实现结合起来来处理一些定制的协议，例如一个TCP服务器类和一个流请求处理类结合，处理基于TCP的网络请求。同时，也可以基于SocketServer模块中的服务器类和请求处理类，实现网络层之上应用层的服务器和请求处理实现，例如基于TCP服务器类实现HTTP服务器，基于流处理请求类实现HTTP请求处理类等。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/Python/SocketServer——网络通信服务器/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+<a id="more"></a>
+<h3 id="服务器类"><a href="#服务器类" class="headerlink" title="服务器类"></a>服务器类</h3><p>SocketServer模块中定义了五种服务器类。</p>
+<ul>
+<li>BaseServer(服务器的基类，定义了API)</li>
+<li>TCPServer(使用TCP/IP套接字)</li>
+<li>UDPServer(使用数据报套接字)</li>
+<li>UnixStreamServer(使用UNIX域套接字，只适用UNIX平台)</li>
+<li>UnixDatagramServer(使用UNIX域套接字，只适用UNIX平台)</li>
+</ul>
+<h4 id="1-构造服务器对象"><a href="#1-构造服务器对象" class="headerlink" title="1. 构造服务器对象"></a>1. 构造服务器对象</h4><p>要构建一个服务器对象，需要向它传递一个地址<code>server_address</code>（服务器将在这个地址上监听请求），以及一个请求处理类<code>RequestHandlerClass</code>（不是请求处理实例）。服务器类基类的构造函数如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseServer</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, server_address, RequestHandlerClass)</span>:</span></div><div class="line">        <span class="string">"""Constructor.  May be extended, do not override."""</span></div><div class="line">        self.server_address = server_address</div><div class="line">        self.RequestHandlerClass = RequestHandlerClass</div><div class="line">        self.__is_shut_down = threading.Event()</div><div class="line">        self.__shutdown_request = <span class="keyword">False</span></div></pre></td></tr></table></figure>
+<p>之后，可以构造TCPServer、UDPServer、UnixStreamServer、UnixDatagramServer。其中，TCPServer继承自BaseServer，UDPServer和UnixStreamServer继承自TCPServer，UnixDatagramServer继承自UDPServer。各个服务器类型可以根据自己的特点对基类进行扩展，例如创建监听套接字、绑定监听地址和端口、进行监听等。一旦实例化服务器对象，便可以使用服务器的方法来监听和处理请求。</p>
+<h4 id="2-实现服务器"><a href="#2-实现服务器" class="headerlink" title="2. 实现服务器"></a>2. 实现服务器</h4><p>由于SocketServer模块中定义的五种服务器类中，除了基类BaseServer和TCPServer外，其余的三个类都是直接或间接地继承自TCPServer。因此，以下以TCPServer的实现过程为例进行说明。</p>
+<ul>
+<li><p><strong>构造TCPServer</strong>。  构造TCPServer时，构造函数创建了一个套接字（这个套接字可以通过更改地址簇和类型用于其他服务器）用于监听请求。并且调用<code>server_bind()</code>绑定监听的地址和端口，调用<code>server_activate()</code>开始监听。</p>
+</li>
+<li><p><strong>启动服务器</strong>。 服务器实例化后，可以使用<code>serve_forever()</code>或者<code>handle_request()</code>来监听和处理请求，实现服务器功能。这两个方法的具体实现依赖于<code>_handle_request_noblock()</code>方法。这个方法是BaseServer类中定义的。具体实现如下：</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_handle_request_noblock</span><span class="params">(self)</span>:</span></div><div class="line">    <span class="string">"""Handle one request, without blocking.</span></div><div class="line"></div><div class="line">    I assume that select.select has returned that the socket is</div><div class="line">    readable before this function was called, so there should be</div><div class="line">    no risk of blocking in get_request().</div><div class="line">    """</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        request, client_address = self.get_request()</div><div class="line">    <span class="keyword">except</span> socket.error:</div><div class="line">        <span class="keyword">return</span></div><div class="line">    <span class="keyword">if</span> self.verify_request(request, client_address):</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            self.process_request(request, client_address)</div><div class="line">        <span class="keyword">except</span>:</div><div class="line">            self.handle_error(request, client_address)</div><div class="line">            self.shutdown_request(request)</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        self.shutdown_request(request)</div></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>处理请求</strong>。 根据上一步骤启动服务器后，服务器便开始监听请求。如果接收到请求信息，便开始处理请求。由<code>_handle_request_noblock()</code>可以看出有几个函数比较重要。</p>
+<ul>
+<li><p><code>get_request()</code> ——这个函数可以在子类中重写。在TCPServer中，该函数调用监听套接字的<code>accept()</code>方法，返回请求<code>request</code>和客户端地址<code>client_address</code>。</p>
+</li>
+<li><p><code>verify_request(request, client_address)</code> ——这个函数可以在子类中重写。该函数返回True表示处理请求，返回False表示忽略请求。</p>
+</li>
+<li><p><code>process_request(request, client_address)</code> ——这个函数可以在子类中重写。该函数将调用<code>finish_request()</code>具体完成请求的处理过程，并且在处理完请求后关闭请求。</p>
+</li>
+<li><p><code>finish_request(request, client_address)</code> ——该函数将构造一个请求处理类的实例。请求处理类被实例化后将调用其<code>handle()</code>方法处理请求。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-进程-线程支持"><a href="#3-进程-线程支持" class="headerlink" title="3. 进程/线程支持"></a>3. 进程/线程支持</h4><p>SocketServer模块中还提供了一些”mix-in”类：<code>ForkingMixIn</code>和<code>ThreadingMixIn</code>。这些类可以和服务器类混合使用，很容易改变服务器，为每个请求使用一个单独的进程或线程。具体的服务器类有：</p>
+<ul>
+<li><p><code>class ForkingUDPServer(ForkingMixIn, UDPServer)</code></p>
+</li>
+<li><p><code>class ForkingTCPServer(ForkingMixIn, TCPServer)</code></p>
+</li>
+<li><p><code>class ThreadingUDPServer(ThreadingMixIn, UDPServer)</code></p>
+</li>
+<li><p><code>class ThreadingTCPServer(ThreadingMixIn, TCPServer)</code></p>
+</li>
+<li><p><code>class ThreadingUnixStreamServer(ThreadingMixIn, UnixStreamServer)</code></p>
+</li>
+<li><p><code>class ThreadingUnixDatagramServer(ThreadingMixIn, UnixDatagramServer)</code></p>
+</li>
+</ul>
+<h3 id="请求处理类"><a href="#请求处理类" class="headerlink" title="请求处理类"></a>请求处理类</h3><p>要接收到来的请求以及确定采取什么行动，其中大部分的工作都是由请求处理类完成的。请求处理类负责在套接字层之上实现协议。具体过程为：读取请求、处理请求、写回响应。请求处理类基类中定义了3个方法，子类中需要重写。</p>
+<ul>
+<li><p><code>setup()</code> ——为请求准备请求处理器</p>
+</li>
+<li><p><code>handle()</code> ——对请求完成具体的工作。诸如解析到来的请求，处理数据，并发回响应等。</p>
+</li>
+<li><p><code>finish()</code> ——清理<code>setup()</code>期间创建的所有数据</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Fan Chunke WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.png" alt="Fan Chunke Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
     </div>
+  </div>
 
-    <div>
+
       
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/网络编程/" rel="tag"># 网络编程</a>
+          
+        </div>
       
 
       
+        
+      
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/uncategorized/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -595,6 +557,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
 
         </div>
         
@@ -614,8 +582,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -697,6 +674,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器类"><span class="nav-number">1.</span> <span class="nav-text">服务器类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-构造服务器对象"><span class="nav-number">1.1.</span> <span class="nav-text">1. 构造服务器对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-实现服务器"><span class="nav-number">1.2.</span> <span class="nav-text">2. 实现服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-进程-线程支持"><span class="nav-number">1.3.</span> <span class="nav-text">3. 进程/线程支持</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#请求处理类"><span class="nav-number">2.</span> <span class="nav-text">请求处理类</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -806,6 +799,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
@@ -837,6 +834,10 @@
   
     
 
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2130680"></script>
+      <!-- UY END -->
     
   
 
