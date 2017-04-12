@@ -69,5 +69,6 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://fanchunke1991:10080864fck@github.com/fanchunke1991/fanchunke1991.github.io.git
-  branch: master
+  repository: 
+      github: https://fanchunke1991:10080864fck@github.com/fanchunke1991/fanchunke1991.github.io.git,master
+      coding: https://git.coding.net/fanchunke1991/fanchunke1991.coding.me.git,master
