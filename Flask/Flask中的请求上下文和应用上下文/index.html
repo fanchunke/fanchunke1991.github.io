@@ -91,7 +91,7 @@
 <meta name="keywords" content="Flask,Web编程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flask中的请求上下文和应用上下文">
-<meta property="og:url" content="http://yoursite.com/Flask/Flask中的请求上下文和应用上下文/index.html">
+<meta property="og:url" content="https://fanchunke1991.github.io/Flask/Flask中的请求上下文和应用上下文/index.html">
 <meta property="og:site_name" content="Learn Python">
 <meta property="og:description" content="在Flask中处理请求时，应用会生成一个“请求上下文”对象。整个请求的处理过程，都会在这个上下文对象中进行。这保证了请求的处理过程不被干扰。处理请求的具体代码如下： 12345def wsgi_app(self, environ, start_response):    with self.request_context(environ):        # with语句中生成一个`respons">
 <meta property="og:updated_time" content="2017-04-11T14:04:18.161Z">
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/Flask/Flask中的请求上下文和应用上下文/"/>
+  <link rel="canonical" href="https://fanchunke1991.github.io/Flask/Flask中的请求上下文和应用上下文/"/>
 
 
 
@@ -205,7 +205,7 @@
         <li class="menu-item menu-item-python">
           <a href="/categories/Python" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-code"></i> <br />
             
             Python
           </a>
@@ -215,7 +215,7 @@
         <li class="menu-item menu-item-flask">
           <a href="/categories/Flask" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-code"></i> <br />
             
             Flask
           </a>
@@ -225,9 +225,19 @@
         <li class="menu-item menu-item-web">
           <a href="/categories/Web编程" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-code"></i> <br />
             
             Web编程
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -290,7 +300,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Flask/Flask中的请求上下文和应用上下文/">
+    <link itemprop="mainEntityOfPage" href="https://fanchunke1991.github.io/Flask/Flask中的请求上下文和应用上下文/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Fan Chunke">
@@ -460,6 +470,9 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Flask v0.9</span></div><div class="line">_request_ctx_stack = LocalStack()</div><div class="line">_app_ctx_stack = LocalStack()</div><div class="line">current_app = LocalProxy(_find_app)</div><div class="line">request = LocalProxy(partial(_lookup_object, <span class="string">'request'</span>))</div><div class="line">session = LocalProxy(partial(_lookup_object, <span class="string">'session'</span>))</div><div class="line">g = LocalProxy(partial(_lookup_object, <span class="string">'g'</span>))</div><div class="line"></div><div class="line"><span class="comment"># 辅助函数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_lookup_object</span><span class="params">(name)</span>:</span></div><div class="line">    top = _request_ctx_stack.top</div><div class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">        <span class="keyword">raise</span> RuntimeError(<span class="string">'working outside of request context'</span>)</div><div class="line">    <span class="keyword">return</span> getattr(top, name)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">_find_app</span><span class="params">()</span>:</span></div><div class="line">    top = _app_ctx_stack.top</div><div class="line">    <span class="keyword">if</span> top <span class="keyword">is</span> <span class="keyword">None</span>:</div><div class="line">        <span class="keyword">raise</span> RuntimeError(<span class="string">'working outside of application context'</span>)</div><div class="line">    <span class="keyword">return</span> top.app</div></pre></td></tr></table></figure>
 <p>可以看出，Flask中使用的一些“全局变量”，包括<code>current_app</code>、<code>request</code>、<code>session</code>、<code>g</code>等都来自于上下文对象。其中<code>current_app</code>一直指向<code>_app_ctx_stack</code>栈顶的“应用上下文”对象，是对当前应用的引用。而<code>request</code>、<code>session</code>、<code>g</code>等一直指向<code>_request_ctx_stack</code>栈顶的“请求上下文”对象，分别引用请求上下文的<code>request</code>、<code>session</code>和<code>g</code>。不过，从 Flask 0.10 起，对象 g 存储在应用上下文中而不再是请求上下文中。</p>
 <p>另外一个问题，在形成这些“全局变量”的时候，使用了<code>werkzeug.local</code>模块的<code>LocalProxy</code>类。之所以要用该类，主要是为了动态地实现对栈顶元素的引用。如果不使用这个类，在生成上述“全局变量”的时候，它们因为指向栈顶元素，而栈顶元素此时为<code>None</code>，所以这些变量也会被设置为<code>None</code>常量。后续即使有上下文对象被推入栈中，相应的“全局变量”也不会发生改变。为了动态地实现对栈顶元素的引用，这里必须使用<code>werkzeug.local</code>模块的<code>LocalProxy</code>类。</p>
+<hr>
+<p><strong>版权声明</strong></p>
+<p></p><p style="font-size: 10px; line-height: 1.5; margin-bottom: 0"><a href="https://fanchunke1991.github.io" style="color:#258FC6">Learn Python</a> by <a href="https://fanchunke1991.github.io" style="color:#258FC6">Fan Chunke</a> is licensed under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">Creative Commons BY-NC-ND 4.0 International License</a>.<br><br>由<a href="https://fanchunke1991.github.io" style="color:#258FC6">Fan Chunke</a>创作并维护的<a href="https://fanchunke1991.github.io" style="color:#258FC6">Learn Python</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">创作共用保留署名-非商业-禁止演绎4.0国际许可证</a>。<br><br>本文首发于<a href="https://fanchunke1991.github.io" style="color:#258FC6">Learn Python</a> 博客（ <a href="https://fanchunke1991.github.io" style="color:#258FC6">https://fanchunke1991.github.io</a> ），版权所有，侵权必究。</p><br>本文永久链接：<a href="https://fanchunke1991.github.io/Flask/Flask中的请求上下文和应用上下文/">https://fanchunke1991.github.io/Flask/Flask中的请求上下文和应用上下文/</a><p></p>
 
       
     </div>
@@ -599,7 +612,7 @@
                alt="Fan Chunke" />
           <p class="site-author-name" itemprop="name">Fan Chunke</p>
            
-              <p class="site-description motion-element" itemprop="description">Learn Python and Programing</p>
+              <p class="site-description motion-element" itemprop="description">Learn Python and Programming</p>
           
         </div>
         <nav class="site-state motion-element">

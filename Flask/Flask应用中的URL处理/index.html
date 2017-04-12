@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="网络编程,Flask," />
+  <meta name="keywords" content="Flask,网络编程," />
 
 
 
@@ -88,10 +88,10 @@
 
 
 <meta name="description" content="在文章：一个Flask应用运行过程剖析中，在一个上下文环境中可以处理请求。如果不考虑在处理请求前后做的一些操作，Flask源码中真正处理请求的是dispatch_request()方法。其源码如下：">
-<meta name="keywords" content="网络编程,Flask">
+<meta name="keywords" content="Flask,网络编程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flask应用中的URL处理">
-<meta property="og:url" content="http://yoursite.com/Flask/Flask应用中的URL处理/index.html">
+<meta property="og:url" content="https://fanchunke1991.github.io/Flask/Flask应用中的URL处理/index.html">
 <meta property="og:site_name" content="Learn Python">
 <meta property="og:description" content="在文章：一个Flask应用运行过程剖析中，在一个上下文环境中可以处理请求。如果不考虑在处理请求前后做的一些操作，Flask源码中真正处理请求的是dispatch_request()方法。其源码如下：">
 <meta property="og:updated_time" content="2017-04-11T13:54:50.493Z">
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/Flask/Flask应用中的URL处理/"/>
+  <link rel="canonical" href="https://fanchunke1991.github.io/Flask/Flask应用中的URL处理/"/>
 
 
 
@@ -205,7 +205,7 @@
         <li class="menu-item menu-item-python">
           <a href="/categories/Python" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-code"></i> <br />
             
             Python
           </a>
@@ -215,7 +215,7 @@
         <li class="menu-item menu-item-flask">
           <a href="/categories/Flask" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-code"></i> <br />
             
             Flask
           </a>
@@ -225,9 +225,19 @@
         <li class="menu-item menu-item-web">
           <a href="/categories/Web编程" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-code"></i> <br />
             
             Web编程
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -290,7 +300,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Flask/Flask应用中的URL处理/">
+    <link itemprop="mainEntityOfPage" href="https://fanchunke1991.github.io/Flask/Flask应用中的URL处理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Fan Chunke">
@@ -431,6 +441,9 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; rule = url_map._rules[2]</div><div class="line">&gt;&gt;&gt; rule</div><div class="line">&lt;Rule '/page/&lt;id&gt;' (HEAD, GET) -&gt; page&gt;</div><div class="line"></div><div class="line">&gt;&gt;&gt; rule._regex</div><div class="line">re.compile(ur'^\|\/page\/(?P&lt;id&gt;\d+)$', re.UNICODE)</div><div class="line"></div><div class="line">&gt;&gt;&gt; rule._regex.pattern</div><div class="line">u'^\\|\\/page\\/(?P&lt;id&gt;\\d+)$'</div></pre></td></tr></table></figure>
 <p>可以看到，在将一条URL规则的实例<code>Rule</code>添加进<code>Map</code>实例的时候，会为这个<code>Rule</code>生成一个正则表达式的属性<code>_regex</code>。这样当这个Flask应用处理请求时，实际上会将请求中的url和Flask应用中每一条URL规则的正则表达式进行匹配。如果匹配成功，则会返回<code>endpoint</code>和一些参数，返回的<code>endpoint</code>可以用来在<code>view_functions</code>找到对应的视图函数，返回的参数可以传递给视图函数。具体的过程就是：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>:</div><div class="line">    <span class="comment"># match_request()可以进行URL匹配</span></div><div class="line">    endpoint, values = self.match_request()</div><div class="line">    <span class="keyword">return</span> self.view_functions[endpoint](**values)</div><div class="line">    ...</div></pre></td></tr></table></figure>
+<hr>
+<p><strong>版权声明</strong></p>
+<p></p><p style="font-size: 10px; line-height: 1.5; margin-bottom: 0"><a href="https://fanchunke1991.github.io" style="color:#258FC6">Learn Python</a> by <a href="https://fanchunke1991.github.io" style="color:#258FC6">Fan Chunke</a> is licensed under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">Creative Commons BY-NC-ND 4.0 International License</a>.<br><br>由<a href="https://fanchunke1991.github.io" style="color:#258FC6">Fan Chunke</a>创作并维护的<a href="https://fanchunke1991.github.io" style="color:#258FC6">Learn Python</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">创作共用保留署名-非商业-禁止演绎4.0国际许可证</a>。<br><br>本文首发于<a href="https://fanchunke1991.github.io" style="color:#258FC6">Learn Python</a> 博客（ <a href="https://fanchunke1991.github.io" style="color:#258FC6">https://fanchunke1991.github.io</a> ），版权所有，侵权必究。</p><br>本文永久链接：<a href="https://fanchunke1991.github.io/Flask/Flask应用中的URL处理/">https://fanchunke1991.github.io/Flask/Flask应用中的URL处理/</a><p></p>
 
       
     </div>
@@ -481,9 +494,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/网络编程/" rel="tag"># 网络编程</a>
-          
             <a href="/tags/Flask/" rel="tag"># Flask</a>
+          
+            <a href="/tags/网络编程/" rel="tag"># 网络编程</a>
           
         </div>
       
@@ -574,7 +587,7 @@
                alt="Fan Chunke" />
           <p class="site-author-name" itemprop="name">Fan Chunke</p>
            
-              <p class="site-description motion-element" itemprop="description">Learn Python and Programing</p>
+              <p class="site-description motion-element" itemprop="description">Learn Python and Programming</p>
           
         </div>
         <nav class="site-state motion-element">
