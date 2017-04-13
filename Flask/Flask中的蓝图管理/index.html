@@ -91,7 +91,7 @@
 <meta name="keywords" content="Flask,Web编程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flask中的蓝图管理">
-<meta property="og:url" content="https://fanchunke.me/Flask/Flask中的蓝图管理/index.html">
+<meta property="og:url" content="http://fanchunke.me/Flask/Flask中的蓝图管理/index.html">
 <meta property="og:site_name" content="Learn Python">
 <meta property="og:description" content="在Flask中模块化应用的实现一文中，我们曾分析过Flask 0.2版本中的Module类。这个类能够实现Flask应用的多模块化管理。在0.7版本中，Flask重新设计了模块化管理的内容，提出了“蓝图”的概念，用来取代Module的功能。">
 <meta property="og:updated_time" content="2017-04-12T09:34:06.542Z">
@@ -125,7 +125,7 @@
 
 
 
-  <link rel="canonical" href="https://fanchunke.me/Flask/Flask中的蓝图管理/"/>
+  <link rel="canonical" href="http://fanchunke.me/Flask/Flask中的蓝图管理/"/>
 
 
 
@@ -300,7 +300,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanchunke.me/Flask/Flask中的蓝图管理/">
+    <link itemprop="mainEntityOfPage" href="http://fanchunke.me/Flask/Flask中的蓝图管理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Fan Chunke">
@@ -450,7 +450,7 @@
 <p>经过上面的例子，可以发现“蓝图”对象注册到Flask应用时，会在Flask应用对应的地方增加“蓝图”对象的相关信息。例如，<code>blog</code>对象中有一个<code>before_request</code>装饰器，注册成功后，在<code>app.before_request_funcs</code>增加了该信息，并且以蓝图名作为键进行区分。<code>blog</code>对象中还有一个<code>route</code>装饰器，它为蓝图增加了一条URL规则，最终会在Flask应用的<code>url_map</code>中出现。由于在创建蓝图时我们增加了<code>static_folder</code>参数，所以在<code>url_map</code>中我们还可以看到<code>&#39;/blog/static/&lt;filename&gt;&#39;</code>这样的URL规则。</p>
 <hr>
 <p><strong>版权声明</strong></p>
-<p></p><p style="font-size: 10px; line-height: 1.5; margin-bottom: 0"><a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> by <a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a> is licensed under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">Creative Commons BY-NC-ND 4.0 International License</a>.<br><br>由<a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a>创作并维护的<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">创作共用保留署名-非商业-禁止演绎4.0国际许可证</a>。<br><br>本文首发于<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> 博客（ <a href="http://fanchunke.me" style="color:#258FC6">http://fanchunke.me</a> ），版权所有，侵权必究。</p><br>本文永久链接：<a href="https://fanchunke.me/Flask/Flask中的蓝图管理/">https://fanchunke.me/Flask/Flask中的蓝图管理/</a><p></p>
+<p></p><p style="font-size: 10px; line-height: 1.5; margin-bottom: 0"><a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> by <a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a> is licensed under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">Creative Commons BY-NC-ND 4.0 International License</a>.<br><br>由<a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a>创作并维护的<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">创作共用保留署名-非商业-禁止演绎4.0国际许可证</a>。<br><br>本文首发于<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> 博客（ <a href="http://fanchunke.me" style="color:#258FC6">http://fanchunke.me</a> ），版权所有，侵权必究。</p><br>本文永久链接：<a href="http://fanchunke.me/Flask/Flask中的蓝图管理/">http://fanchunke.me/Flask/Flask中的蓝图管理/</a><p></p>
 
       
     </div>
