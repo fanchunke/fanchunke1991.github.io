@@ -17,6 +17,7 @@ copyright: false
 - [BaseHTTPServer——实现Web服务器](https://fanchunke1991.github.io/Python/BaseHTTPServer——实现Web服务器)
 - [SimpleHTTPServer——一个简单的HTTP服务器](https://fanchunke1991.github.io/Python/SimpleHTTPServer——一个简单的HTTP服务器)
 - [wsgiref包——符合WSGI标准的Web服务实现（一）](https://fanchunke1991.github.io/Python/wsgiref包——符合WSGI标准的Web服务实现（一）)
+- [Python中的作用域规则和闭包简析](http://fanchunke.me/Python/Python中的作用域规则和闭包简析/)
 
 #### Werkzeug
 
