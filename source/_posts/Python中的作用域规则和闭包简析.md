@@ -81,3 +81,63 @@ result: 6
 # 结果显示为三个变量之和
 6
 ```
+
+以上的验证结果说明，在上述嵌套的函数中，内部函数可以正确地引用外部函数的变量，即使外部的函数已经返回。
+
+这种内部函数的局部作用域中可以访问外部函数局部作用域中变量的行为，我们称为： **闭包**。内部函数可以访问外部函数变量的特点很像将外部函数的变量直接“打包”到内部函数中一样，我们也可以这样理解闭包：将组成函数的语句以及执行这些语句的环境“打包”在一起时得到的对象称为闭包。
+
+#### 和闭包相关的几个对象
+
+为了了解闭包是怎么实现内部函数对外部函数变量的引用，还需要对闭包相关的几个对象进行介绍。关于这几个对象会涉及到Python的底层实现，本文中对此不加以详述，可以参考以下文章：
+
+- [Python源码阅读-闭包的实现](http://python.jobbole.com/83545/)
+- [Python闭包详解](http://www.cnblogs.com/ChrisChen3121/p/3208119.html)
+
+不过，为了直观地说明闭包的实现过程（不分析底层实现），这里先简单介绍以下`code`对象。`code`对象是指代码对象，表示编译成字节的的可执行Python代码，或者字节码。它有几个比较重要的属性：
+
+- co_name：函数的名称
+- co_nlocals: 函数使用的局部变量的个数
+- co_varnames: 一个包含局部变量名字的元组
+- co_cellvars: 是一个元组，包含嵌套的函数所引用的局部变量的名字
+- co_freevars: 是一个元组，保存使用了的外层作用域中的变量名
+- co_consts： 是一个包含字节码使用的字面量的元组
+
+其余属性可以参考[Python文档](http://python.usyiyi.cn/translate/python_278/reference/datamodel.html#index-37)。
+
+其中比较关键的是`co_varnames`和`co_freevars`两个属性。我们对上面的例子稍加修改：
+
+```Python
+>>> def foo():
+        a = 1
+        b = 2
+        def bar():
+            return a + 1
+        def bar2():
+            return b + 2
+        return bar
+>>> bar = foo()
+# 外层函数
+>>> foo.func_code.co_cellvars
+('a', 'b')
+>>> foo.func_code.co_freevars
+()
+# 内层嵌套函数
+>>> bar.func_code.co_cellvars
+()
+>>> bar.func_code.co_freevars
+('a',)
+```
+
+以上说明外层函数的`code`对象的`co_cellvars`保存了内部嵌套函数需要引用的变量的名字，而内层嵌套函数的`code`对象的`co_freevars`保存了需要引用外部函数作用域中的变量名字。具体来说，就是`foo`函数中嵌套了两个函数，它们都需要引用`foo`函数局部作用域中的变量，所以`foo.func_code.co_cellvars`便包含变量`a`和变量`b`的名称。而函数`bar`是`foo`的返回值，只引用了变量`a`，因此`bar.func_code.co_freevars`中便只包含变量`a`。
+
+内部函数和外部函数的`co_freevars`、`co_cellvars`的对应关系，使得在函数编译过程中内部函数具有了一个闭包的特殊属性`__closure__`（底层中对此有相关实现）。`__closure__`属性是一个由`cell`对象组成的元组，包含了由多个作用域引用的变量。可以做以下验证：
+
+```Python
+>>> foo.__closure__     #None
+# 内部函数bar对变量a的引用
+>>> bar.__closure__
+(<cell at 0x00000000044F6798: int object at 0x0000000003FA4B38>,)
+# 内部函数bar引用的变量a的值
+>>> bar.__closure__[0].cell_contents
+1
+```
