@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -87,16 +87,17 @@
 
 
 
-<meta name="description" content="Learn Python and Programming">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="http://fanchunke.me/tags/index.html">
+<meta name="description" content="在对Python中的闭包进行简单分析之前，我们先了解一下Python中的作用域规则。关于Python中作用域的详细知识，有很多的博文都进行了介绍。这里我们先从一个简单的例子入手。 Python中的作用域假设在交互式命令行中定义如下的函数： 123456&amp;gt;&amp;gt;&amp;gt; a = 1&amp;gt;&amp;gt;&amp;gt; def foo():        b = 2        c = 3">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python中的作用域规则和闭包简析">
+<meta property="og:url" content="http://fanchunke.me/Python/Python中的作用域规则和闭包简析/index.html">
 <meta property="og:site_name" content="Learn Python">
-<meta property="og:description" content="Learn Python and Programming">
-<meta property="og:updated_time" content="2017-04-12T09:34:06.605Z">
+<meta property="og:description" content="在对Python中的闭包进行简单分析之前，我们先了解一下Python中的作用域规则。关于Python中作用域的详细知识，有很多的博文都进行了介绍。这里我们先从一个简单的例子入手。 Python中的作用域假设在交互式命令行中定义如下的函数： 123456&amp;gt;&amp;gt;&amp;gt; a = 1&amp;gt;&amp;gt;&amp;gt; def foo():        b = 2        c = 3">
+<meta property="og:updated_time" content="2017-04-14T12:10:39.192Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
-<meta name="twitter:description" content="Learn Python and Programming">
+<meta name="twitter:title" content="Python中的作用域规则和闭包简析">
+<meta name="twitter:description" content="在对Python中的闭包进行简单分析之前，我们先了解一下Python中的作用域规则。关于Python中作用域的详细知识，有很多的博文都进行了介绍。这里我们先从一个简单的例子入手。 Python中的作用域假设在交互式命令行中定义如下的函数： 123456&amp;gt;&amp;gt;&amp;gt; a = 1&amp;gt;&amp;gt;&amp;gt; def foo():        b = 2        c = 3">
 
 
 
@@ -124,19 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://fanchunke.me/tags/"/>
+  <link rel="canonical" href="http://fanchunke.me/Python/Python中的作用域规则和闭包简析/"/>
 
 
 
 
 
-  <title>
-  
-
-  
-    tags | Learn Python
-  
-</title>
+  <title> Python中的作用域规则和闭包简析 | Learn Python </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -171,7 +166,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -340,25 +335,232 @@
             
 
   <div id="posts" class="posts-expand">
-  <header class="post-header">
+    
 
-	<h1 class="post-title" itemprop="name headline">tags</h1>
+  
 
+  
+  
+  
 
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://fanchunke.me/Python/Python中的作用域规则和闭包简析/">
 
-</header>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fan Chunke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn Python">
+    </span>
 
     
-    
-      <div class="tag-cloud">
-        <div class="tag-cloud-title">
-            目前共计 5 个标签
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python中的作用域规则和闭包简析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-14T18:37:03+08:00">
+                2017-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/Python/Python中的作用域规则和闭包简析/" class="leancloud_visitors" data-flag-title="Python中的作用域规则和闭包简析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
         </div>
-        <div class="tag-cloud-tags">
-          <a href="/tags/Flask/" style="font-size: 30px; color: #111">Flask</a> <a href="/tags/Python/" style="font-size: 18px; color: #8e8e8e">Python</a> <a href="/tags/Web编程/" style="font-size: 24px; color: #4f4f4f">Web编程</a> <a href="/tags/Werkzeug/" style="font-size: 12px; color: #ccc">Werkzeug</a> <a href="/tags/网络编程/" style="font-size: 18px; color: #8e8e8e">网络编程</a>
-        </div>
-      </div>
+      </header>
     
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在对Python中的闭包进行简单分析之前，我们先了解一下Python中的作用域规则。关于Python中作用域的详细知识，有很多的博文都进行了介绍。这里我们先从一个简单的例子入手。</p>
+<h3 id="Python中的作用域"><a href="#Python中的作用域" class="headerlink" title="Python中的作用域"></a>Python中的作用域</h3><p>假设在交互式命令行中定义如下的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></div><div class="line">        b = <span class="number">2</span></div><div class="line">        c = <span class="number">3</span></div><div class="line">        <span class="keyword">print</span> <span class="string">"locals: %s"</span> % locals()</div><div class="line">        <span class="keyword">return</span> <span class="string">"result: %d"</span> % (a + b +c)</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>上述代码先给<code>a</code>赋值1，紧接着定义了一个函数：<code>foo()</code>。在函数<code>foo()</code>中我们定义了两个整数<code>b</code>和<code>c</code>，函数的返回值为<code>a</code>、<code>b</code>、<code>c</code>三个数的和。</p>
+<p>对上述函数进行验证：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># result</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>foo()</div><div class="line">locals: &#123;<span class="string">'c'</span>: <span class="number">3</span>, <span class="string">'b'</span>: <span class="number">2</span>&#125;</div><div class="line">result: <span class="number">6</span></div></pre></td></tr></table></figure>
+<p>根据验证的结果，<code>foo()</code>函数的返回值为6。上述的函数定义中只有<code>b</code>和<code>c</code>两个变量的赋值，那调用函数是如何判断<code>a</code>的值呢？这涉及到函数的作用域规则。本文摘录《Python参考手册（第4版）》中的相关论述：</p>
+<blockquote>
+<p>每次执行一个函数时， 就会创建心得局部命名空间。该命名空间代表一个局部环境，其中包含函数参数的名称和在函数体内赋值的变量名称。解析这些名称时：</p>
+<ul>
+<li>解释器将首先搜索局部命名空间；</li>
+<li>如果没有找到匹配的名称，它就会搜索全局命名空间（函数的全局命名空间始终是定义该函数的模块）；</li>
+<li>如果解释器在全局命名空间中也找不到匹配值，最终会检查内置命名空间；</li>
+<li>如果在内置命名空间中也找不到匹配值，就会引发NameError异常。</li>
+</ul>
+</blockquote>
+<p>对应于上面的例子，<code>foo</code>函数首先会在局部命名空间中找三个变量的匹配值。上述代码中的<code>locals()</code>方法给出了<code>foo</code>函数局部命名空间的内容。可以看出，局部命名空间是一个字典，包含<code>b</code>和<code>c</code>的值，这是因为我们在<code>foo</code>函数中定义了这两个变量。然而，局部命名空间中不包含<code>a</code>的值，所以就需要在全局命名空间中寻找。可以使用<code>__globals__</code>获取一个函数的局部命名空间。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># foo函数的全局命名空间</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>foo.__globals__</div><div class="line">&#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'__builtins__'</span>: &lt;module <span class="string">'__builtin__'</span> (built-<span class="keyword">in</span>)&gt;, <span class="string">'__package__'</span>: <span class="keyword">None</span>, <span class="string">'__name__'</span>: <span class="string">'__main__'</span>, <span class="string">'foo'</span>: &lt;function foo at <span class="number">0x0000000004613518</span>&gt;, <span class="string">'__doc__'</span>: <span class="keyword">None</span>&#125;</div></pre></td></tr></table></figure>
+<p><code>foo</code>函数的全局命名空间中包含了内置函数模块、<code>foo</code>函数、变量<code>a</code>以及其他的一些参数。由于在<code>foo</code>函数的全局命名空间中找到了变量<code>a</code>，<code>foo</code>函数便返回三个变量的和。</p>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>上述的Python作用域规则具有普遍性。然而，在Python中“一切皆对象”，函数也不例外。这也就是说可以把函数当作参数传递给其他的函数，也可以放在数据结构中，还可以作为函数的返回结果。在这种情况下，Python的作用域规则会发生什么变化呢？我们还是举一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></div><div class="line">        a = <span class="number">1</span></div><div class="line">        <span class="function"><span class="keyword">def</span> <span class="title">bar</span><span class="params">()</span>:</span></div><div class="line">            b = <span class="number">2</span></div><div class="line">            c = <span class="number">3</span></div><div class="line">            <span class="keyword">return</span> a + b + c</div><div class="line">        <span class="keyword">return</span> bar</div></pre></td></tr></table></figure>
+<hr>
+<p><strong>版权声明</strong></p>
+<p></p><p style="font-size: 10px; line-height: 1.5; margin-bottom: 0"><a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> by <a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a> is licensed under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">Creative Commons BY-NC-ND 4.0 International License</a>.<br><br>由<a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a>创作并维护的<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">创作共用保留署名-非商业-禁止演绎4.0国际许可证</a>。<br><br>本文首发于<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> 博客（ <a href="http://fanchunke.me" style="color:#258FC6">http://fanchunke.me</a> ），版权所有，侵权必究。</p><br>本文永久链接：<a href="http://fanchunke.me/Python/Python中的作用域规则和闭包简析/">http://fanchunke.me/Python/Python中的作用域规则和闭包简析/</a><p></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Fan Chunke WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.png" alt="Fan Chunke Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Flask/Flask中的请求上下文和应用上下文/" rel="prev" title="Flask中的请求上下文和应用上下文">
+                Flask中的请求上下文和应用上下文 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -367,6 +569,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
 
         </div>
         
@@ -386,8 +594,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -469,6 +686,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python中的作用域"><span class="nav-number">1.</span> <span class="nav-text">Python中的作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包"><span class="nav-number">2.</span> <span class="nav-text">闭包</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -590,6 +823,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
@@ -621,6 +858,10 @@
   
     
 
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2130680"></script>
+      <!-- UY END -->
     
   
 
