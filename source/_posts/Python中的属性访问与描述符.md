@@ -245,3 +245,103 @@ calling __delattr__
 ```
 
 ### 描述符
+
+描述符是Python 2.2 版本中引进来的新概念。描述符一般用于实现对象系统的底层功能， 包括绑定和非绑定方法、类方法、静态方法特特性等。关于描述符的概念，官方并没有明确的定义，可以在网上查阅相关资料。这里我从自己的认识谈一些想法，如有不当之处还请包涵。
+
+在前面我们了解了对象属性访问和行为控制的一些特殊方法，例如`__getattribute__`、`__getattr__`、`__setattr__`、`__delattr__`。以我的理解来看，这些方法应当具有属性的"普适性"，可以用于属性查找、设置、删除的一般方法，也就是说所有的属性都可以使用这些方法实现属性的查找、设置、删除等操作。但是，这并不能很好地实现对某个具体属性的访问控制行为。例如，上例中假如要实现`dog.age`属性的类型设置（只能是整数），如果单单去修改`__setattr__`方法满足它，那这个方法便有可能不能支持其他的属性设置。
+
+在类中设置属性的控制行为不能很好地解决问题，Python给出的方案是：`__getattribute__`、`__getattr__`、`__setattr__`、`__delattr__`等方法用来实现属性查找、设置、删除的一般逻辑，而对属性的控制行为就由属性对象来控制。这里单独抽离出来一个属性对象，在属性对象中定义这个属性的查找、设置、删除行为。这个属性对象就是描述符。
+
+描述符对象一般是作为其他类对象的属性而存在。在其内部定义了三个方法用来实现属性对象的查找、设置、删除行为。这三个方法分别是：
+
+- __get__(self, instance, owner)：定义当试图取出描述符的值时的行为。
+- __set__(self, instance, value)：定义当描述符的值改变时的行为。
+- __delete__(self, instance)：定义当描述符的值被删除时的行为。
+
+其中：instance为把描述符对象作为属性的对象实例；
+      owner为instance的类对象。
+
+以下以官方的一个例子进行说明：
+
+```Python
+class RevealAccess(object):
+
+    def __init__(self, initval=None, name='var'):
+        self.val = initval
+        self.name = name
+
+    def __get__(self, obj, objtype):
+        print 'Retrieving', self.name
+        return self.val
+
+    def __set__(self, obj, val):
+        print 'Updating', self.name
+        self.val = val
+
+class MyClass(object):
+    x = RevealAccess(10, 'var "x"')
+    y = 5
+```
+
+以上定义了两个类。其中`RevealAccess`类的实例是作为`MyClass`类属性`x`的值存在的。而且`RevealAccess`类定义了`__get__`、`__set__`方法，它是一个描述符对象。注意，描述符对象的`__get__`、`__set__`方法中使用了诸如`self.val`和`self.val = val`等语句，这些语句会调用`__getattribute__`、`__setattr__`等方法，这也说明了`__getattribute__`、`__setattr__`等方法在控制访问对象属性上的一般性（一般性是指对于所有属性它们的控制行为一致），以及`__get__`、`__set__`等方法在控制访问对象属性上的特殊性（特殊性是指它针对某个特定属性可以定义不同的行为）。
+
+以下进行验证：
+
+```Python
+# 创建Myclass类的实例m
+>>> m = MyClass()
+
+# 查看m和MyClass的__dict__
+>>> m.__dict__
+{}
+>>> MyClass.__dict__
+dict_proxy({'__dict__': <attribute '__dict__' of 'MyClass' objects>,
+            '__doc__': None,
+            '__module__': '__main__',
+            '__weakref__': <attribute '__weakref__' of 'MyClass' objects>,
+            'x': <__main__.RevealAccess at 0x5130080>,
+            'y': 5})
+
+# 访问m.x。会先触发__getattribute__方法
+# 由于x属性的值是一个描述符，会触发它的__get__方法
+>>> m.x
+Retrieving var "x"
+10
+
+# 设置m.x的值。对描述符进行赋值，会触发它的__set__方法
+# 在__set__方法中还会触发__setattr__方法（self.val = val）
+>>> m.x = 20
+Updating var "x"
+
+# 再次访问m.x
+>>> m.x
+Retrieving var "x"
+20
+
+# 查看m和MyClass的__dict__，发现这与对描述符赋值之前一样。
+# 这一点与一般属性的赋值不同，可参考上述的__setattr__方法。
+# 之所以前后没有发生变化，是因为变化体现在描述符对象上，
+# 而不是实例对象m和类MyClass上。
+>>> m.__dict__
+{}
+>>> MyClass.__dict__
+dict_proxy({'__dict__': <attribute '__dict__' of 'MyClass' objects>,
+            '__doc__': None,
+            '__module__': '__main__',
+            '__weakref__': <attribute '__weakref__' of 'MyClass' objects>,
+            'x': <__main__.RevealAccess at 0x5130080>,
+            'y': 5})
+```
+
+上面的例子对描述符进行了一定的解释，不过对描述符还需要更进一步的探讨和分析，这个工作先留待以后继续进行。
+
+最后，还需要注意一点：描述符有数据描述符和非数据描述符之分。
+- 只要至少实现`__get__`、`__set__`、`__delete__`方法中的一个就可以认为是描述符；
+- 只实现`__get__`方法的对象是非数据描述符，意味着在初始化之后它们只能被读取；
+- 同时实现`__get__`和`__set__`的对象是数据描述符，意味着这种属性是可读写的。
+
+### 属性访问的优先规则
+
+在以上的讨论中，我们一直回避着一个问题，那就是属性访问时的优先规则。我们了解到，属性一般都在`__dict__`中存储，但是在访问属性时，在对象属性、类属型、基类属性中以怎样的规则来查询属性呢？以下对Python中属性访问的规则进行分析。
+
+由上述的分析可知，属性访问的入口点是`__getattribute__`方法。它的实现中定义了Python中属性访问的优先规则。
