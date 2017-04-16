@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -87,15 +87,17 @@
 
 
 
-<meta name="description" content="Learn Python and Programming">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Learn Python">
-<meta property="og:url" content="http://fanchunke.me/tags/Werkzeug/index.html">
+<meta name="description" content="在Python中，对于一个对象的属性访问，我们一般采用的是点(.)属性运算符进行操作。例如，有一个类实例对象foo，它有一个name属性，那便可以使用foo.name对此属性进行访问。一般而言，点(.)属性运算符比较直观，也是我们经常碰到的一种属性访问方式。然而，在点(.)属性运算符的背后却是别有洞天，值得我们对对象的属性访问进行探讨。 在进行对象属性访问的分析之前，我们需要先了解一下对象怎么表示">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python中的属性访问与描述符">
+<meta property="og:url" content="http://fanchunke.me/Python/Python中的属性访问与描述符/index.html">
 <meta property="og:site_name" content="Learn Python">
-<meta property="og:description" content="Learn Python and Programming">
+<meta property="og:description" content="在Python中，对于一个对象的属性访问，我们一般采用的是点(.)属性运算符进行操作。例如，有一个类实例对象foo，它有一个name属性，那便可以使用foo.name对此属性进行访问。一般而言，点(.)属性运算符比较直观，也是我们经常碰到的一种属性访问方式。然而，在点(.)属性运算符的背后却是别有洞天，值得我们对对象的属性访问进行探讨。 在进行对象属性访问的分析之前，我们需要先了解一下对象怎么表示">
+<meta property="og:updated_time" content="2017-04-16T09:01:17.141Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Learn Python">
-<meta name="twitter:description" content="Learn Python and Programming">
+<meta name="twitter:title" content="Python中的属性访问与描述符">
+<meta name="twitter:description" content="在Python中，对于一个对象的属性访问，我们一般采用的是点(.)属性运算符进行操作。例如，有一个类实例对象foo，它有一个name属性，那便可以使用foo.name对此属性进行访问。一般而言，点(.)属性运算符比较直观，也是我们经常碰到的一种属性访问方式。然而，在点(.)属性运算符的背后却是别有洞天，值得我们对对象的属性访问进行探讨。 在进行对象属性访问的分析之前，我们需要先了解一下对象怎么表示">
 
 
 
@@ -123,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://fanchunke.me/tags/Werkzeug/"/>
+  <link rel="canonical" href="http://fanchunke.me/Python/Python中的属性访问与描述符/"/>
 
 
 
 
 
-  <title> 标签: Werkzeug | Learn Python </title>
+  <title> Python中的属性访问与描述符 | Learn Python </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -164,7 +166,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -332,130 +334,232 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        Werkzeug
-        <small>标签</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/Flask/Werkzeug库——local模块/" itemprop="url">
-              
-                <span itemprop="name">Werkzeug库——local模块</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-22T21:33:03+08:00"
-              content="2017-03-22" >
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/Flask/Werkzeug库——routing模块/" itemprop="url">
-              
-                <span itemprop="name">Werkzeug库——routing模块</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-19T21:31:32+08:00"
-              content="2017-03-19" >
-          03-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/Flask/Werkzeug库——wrappers模块/" itemprop="url">
-              
-                <span itemprop="name">Werkzeug库——wrappers模块</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-17T21:30:03+08:00"
-              content="2017-03-17" >
-          03-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/Flask/Werkzeug库简介/" itemprop="url">
-              
-                <span itemprop="name">Werkzeug库简介</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-17T21:25:40+08:00"
-              content="2017-03-17" >
-          03-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </div>
 
   
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://fanchunke.me/Python/Python中的属性访问与描述符/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Fan Chunke">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn Python">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python中的属性访问与描述符
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-16T13:07:58+08:00">
+                2017-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/Python/Python中的属性访问与描述符/" class="leancloud_visitors" data-flag-title="Python中的属性访问与描述符">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在Python中，对于一个对象的属性访问，我们一般采用的是点(.)属性运算符进行操作。例如，有一个类实例对象<code>foo</code>，它有一个<code>name</code>属性，那便可以使用<code>foo.name</code>对此属性进行访问。一般而言，点(.)属性运算符比较直观，也是我们经常碰到的一种属性访问方式。然而，在点(.)属性运算符的背后却是别有洞天，值得我们对对象的属性访问进行探讨。</p>
+<p>在进行对象属性访问的分析之前，我们需要先了解一下对象怎么表示其属性。为了便于说明，本文以新式类为例。有关新式类和旧式类的区别，大家可以查看Python官方文档。</p>
+<a id="more"></a>
+<h3 id="对象的属性"><a href="#对象的属性" class="headerlink" title="对象的属性"></a>对象的属性</h3><p>Python中，“一切皆对象”。我们可以给对象设置各种属性。先来看一个简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">(object)</span>:</span></div><div class="line">    run = <span class="keyword">True</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></div><div class="line">    fly = <span class="keyword">False</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, age)</span>:</span></div><div class="line">        self.age = age</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sound</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="string">"wang wang~"</span></div></pre></td></tr></table></figure>
+<p>上面的例子中，我们定义了两个类。类<code>Animal</code>定义了一个属性<code>run</code>；类<code>Dog</code>继承自<code>Animal</code>，定义了一个属性<code>fly</code>和两个函数。接下来，我们实例化一个对象。对象的属性可以从特殊属性<code>__dict__</code>中查看。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 实例化一个对象dog</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>dog = Dog(<span class="number">1</span>)</div><div class="line"><span class="comment"># 查看dog对象的属性</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>dog.__dict__</div><div class="line">&#123;<span class="string">'age'</span>: <span class="number">1</span>&#125;</div><div class="line"><span class="comment"># 查看类Dog的属性</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>Dog.__dict__</div><div class="line">dict_proxy(&#123;<span class="string">'__doc__'</span>: <span class="keyword">None</span>,</div><div class="line">            <span class="string">'__init__'</span>: &lt;function __main__.__init__&gt;,</div><div class="line">            <span class="string">'__module__'</span>: <span class="string">'__main__'</span>,</div><div class="line">            <span class="string">'fly'</span>: <span class="keyword">False</span>,</div><div class="line">            <span class="string">'sound'</span>: &lt;function __main__.sound&gt;&#125;)</div><div class="line"><span class="comment"># 查看类Animal的属性</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>Animal.__dict__</div><div class="line">dict_proxy(&#123;<span class="string">'__dict__'</span>: &lt;attribute <span class="string">'__dict__'</span> of <span class="string">'Animal'</span> objects&gt;,</div><div class="line">            <span class="string">'__doc__'</span>: <span class="keyword">None</span>,</div><div class="line">            <span class="string">'__module__'</span>: <span class="string">'__main__'</span>,</div><div class="line">            <span class="string">'__weakref__'</span>: &lt;attribute <span class="string">'__weakref__'</span> of <span class="string">'Animal'</span> objects&gt;,</div><div class="line">            <span class="string">'run'</span>: <span class="keyword">True</span>&#125;)</div></pre></td></tr></table></figure>
+<p>由上面的例子可以看出：属性在哪个对象上定义，便会出现在哪个对象的<code>__dict__</code>中。例如：</p>
+<ul>
+<li>类<code>Animal</code>定义了一个属性<code>run</code>，那这个<code>run</code>属性便只会出现在类<code>Animal</code>的<code>__dict__</code>中，而不会出现在其子类中。</li>
+<li>类<code>Dog</code>定义了一个属性<code>fly</code>和两个函数，那这些属性和方法便会出现在类<code>Dog</code>的<code>__dict__</code>中，同时它们也不会出现在实例的<code>__dict__</code>中。</li>
+<li>实例对象<code>dog</code>的<code>__dict__</code>中只出现了一个属性<code>age</code>，这是在初始化实例对象的时候添加的，它没有父类的属性和方法。</li>
+<li>由此可知：Python中对象的属性具有 <strong>“层次性”</strong>，属性在哪个对象上定义，便会出现在哪个对象的<code>__dict__</code>中。</li>
+</ul>
+<p>至于Python对象如何进行属性访问呢？一般有这样的规则：</p>
+<ul>
+<li>先在对象的<code>__dict__</code>中进行查找，如果找到，则返回属性的值，例如<code>dog.age</code>就可以直接在<code>dog</code>的<code>__dict__</code>中找到；</li>
+<li>如果在实例对象的的<code>__dict__</code>中找不到，例如<code>dog.fly</code>，则继续在父类的<code>__dict__</code>中进行查找，因此可以在<code>Animal</code>的<code>__dict__</code>中找到<code>dog.fly</code>的值；</li>
+<li>按照上面的步骤由实例到类，再到父类、基类的顺序查找对象的属性。如果可以找到，返回结果；如果找不到，则返回<code>AttributeError</code>错误。</li>
+</ul>
+<hr>
+<p><strong>版权声明</strong></p>
+<p></p><p style="font-size: 10px; line-height: 1.5; margin-bottom: 0"><a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> by <a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a> is licensed under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">Creative Commons BY-NC-ND 4.0 International License</a>.<br><br>由<a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a>创作并维护的<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">创作共用保留署名-非商业-禁止演绎4.0国际许可证</a>。<br><br>本文首发于<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> 博客（ <a href="http://fanchunke.me" style="color:#258FC6">http://fanchunke.me</a> ），版权所有，侵权必究。</p><br>本文永久链接：<a href="http://fanchunke.me/Python/Python中的属性访问与描述符/">http://fanchunke.me/Python/Python中的属性访问与描述符/</a><p></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.png" alt="Fan Chunke WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.png" alt="Fan Chunke Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Python/Python中的作用域规则和闭包简析/" rel="prev" title="Python中的作用域规则和闭包简析">
+                Python中的作用域规则和闭包简析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -463,6 +567,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
 
         </div>
         
@@ -482,8 +592,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -565,6 +684,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象的属性"><span class="nav-number">1.</span> <span class="nav-text">对象的属性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -686,6 +821,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
@@ -717,6 +856,10 @@
   
     
 
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2130680"></script>
+      <!-- UY END -->
     
   
 
