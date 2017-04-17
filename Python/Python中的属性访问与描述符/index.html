@@ -94,10 +94,12 @@
 <meta property="og:url" content="http://fanchunke.me/Python/Python中的属性访问与描述符/index.html">
 <meta property="og:site_name" content="Learn Python">
 <meta property="og:description" content="在Python中，对于一个对象的属性访问，我们一般采用的是点(.)属性运算符进行操作。例如，有一个类实例对象foo，它有一个name属性，那便可以使用foo.name对此属性进行访问。一般而言，点(.)属性运算符比较直观，也是我们经常碰到的一种属性访问方式。然而，在点(.)属性运算符的背后却是别有洞天，值得我们对对象的属性访问进行探讨。 在进行对象属性访问的分析之前，我们需要先了解一下对象怎么表示">
-<meta property="og:updated_time" content="2017-04-16T16:36:18.170Z">
+<meta property="og:image" content="http://ook8ztpnr.bkt.clouddn.com/image/blog/Python%E5%B1%9E%E6%80%A7%E6%9F%A5%E6%89%BE.png">
+<meta property="og:updated_time" content="2017-04-17T15:47:38.502Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中的属性访问与描述符">
 <meta name="twitter:description" content="在Python中，对于一个对象的属性访问，我们一般采用的是点(.)属性运算符进行操作。例如，有一个类实例对象foo，它有一个name属性，那便可以使用foo.name对此属性进行访问。一般而言，点(.)属性运算符比较直观，也是我们经常碰到的一种属性访问方式。然而，在点(.)属性运算符的背后却是别有洞天，值得我们对对象的属性访问进行探讨。 在进行对象属性访问的分析之前，我们需要先了解一下对象怎么表示">
+<meta name="twitter:image" content="http://ook8ztpnr.bkt.clouddn.com/image/blog/Python%E5%B1%9E%E6%80%A7%E6%9F%A5%E6%89%BE.png">
 
 
 
@@ -517,7 +519,20 @@
 <li>同时实现<code>__get__</code>和<code>__set__</code>的对象是数据描述符，意味着这种属性是可读写的。</li>
 </ul>
 <h3 id="属性访问的优先规则"><a href="#属性访问的优先规则" class="headerlink" title="属性访问的优先规则"></a>属性访问的优先规则</h3><p>在以上的讨论中，我们一直回避着一个问题，那就是属性访问时的优先规则。我们了解到，属性一般都在<code>__dict__</code>中存储，但是在访问属性时，在对象属性、类属型、基类属性中以怎样的规则来查询属性呢？以下对Python中属性访问的规则进行分析。</p>
-<p>由上述的分析可知，属性访问的入口点是<code>__getattribute__</code>方法。它的实现中定义了Python中属性访问的优先规则。</p>
+<p>由上述的分析可知，属性访问的入口点是<code>__getattribute__</code>方法。它的实现中定义了Python中属性访问的优先规则。Python官方文档中对<code>__getattribute__</code>的底层实现有相关的介绍，本文暂时只是讨论属性查找的规则，相关规则可见下图：</p>
+<p><img src="http://ook8ztpnr.bkt.clouddn.com/image/blog/Python%E5%B1%9E%E6%80%A7%E6%9F%A5%E6%89%BE.png" alt="Python属性查找"></p>
+<p>上图是查找<code>b.x</code>这样一个属性的过程。在这里要对此图进行简单的介绍：</p>
+<ol>
+<li>查找属性的第一步是搜索基类列表，即<code>type(b).__mro__</code>，直到找到该属性的第一个定义，并将该属性的值赋值给<code>descr</code>；</li>
+<li>判断<code>descr</code>的类型。它的类型可分为数据描述符、非数据描述符、普通属性、未找到等类型。若<code>descr</code>为数据描述符，则调用<code>desc.__get__(b, type(b))</code>，并将结果返回，结束执行。否则进行下一步；</li>
+<li>如果<code>descr</code>为非数据描述符、普通属性、未找到等类型，则查找实例b的实例属性，即<code>b.__dict__</code>。如果找到，则将结果返回，结束执行。否则进行下一步；</li>
+<li>如果在<code>b.__dict__</code>未找到相关属性，则重新回到<code>descr</code>值的判断上。<ul>
+<li>若<code>descr</code>为非数据描述符，则调用<code>desc.__get__(b, type(b))</code>，并将结果返回，结束执行；</li>
+<li>若<code>descr</code>为普通属性，直接返回结果并结束执行；</li>
+<li>若<code>descr</code>为空（未找到），则最终抛出 AttributeError 异常，结束查找。</li>
+</ul>
+</li>
+</ol>
 <hr>
 <p><strong>版权声明</strong></p>
 <p></p><p style="font-size: 10px; line-height: 1.5; margin-bottom: 0"><a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> by <a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a> is licensed under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">Creative Commons BY-NC-ND 4.0 International License</a>.<br><br>由<a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a>创作并维护的<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">创作共用保留署名-非商业-禁止演绎4.0国际许可证</a>。<br><br>本文首发于<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> 博客（ <a href="http://fanchunke.me" style="color:#258FC6">http://fanchunke.me</a> ），版权所有，侵权必究。</p><br>本文永久链接：<a href="http://fanchunke.me/Python/Python中的属性访问与描述符/">http://fanchunke.me/Python/Python中的属性访问与描述符/</a><p></p>

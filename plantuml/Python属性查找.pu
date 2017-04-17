@@ -1,0 +1,34 @@
+@startuml
+
+|#AntiqueWhite|类及元类|
+start
+:b.x;
+:type(b)._mro_;
+-> 查找类属性;
+if (descr) then (数据描述符)
+    :descr._get_(b, type(b));
+else (其他)
+    |实例b|
+    if (b._dict_['x']) then (不存在)
+        |类及元类|
+        :descr;
+        -> 判断descr的类型;
+            fork
+                :非数据描述符;
+                -> 返回;
+                :descr._get_(b, type(b));
+            fork again
+                :普通属性;
+                -> 返回;
+                :descr;
+            fork again
+                :找不到;
+                -> 返回;
+                :AttributeError;
+            end fork
+    else (存在)
+    endif
+endif
+:返回值;
+stop
+@enduml
