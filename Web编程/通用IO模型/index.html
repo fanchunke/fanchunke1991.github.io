@@ -100,7 +100,7 @@
 <meta property="og:image" content="http://ook8ztpnr.bkt.clouddn.com/image/blog/%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8%E5%BC%8FIO%E6%A8%A1%E5%9E%8B.png">
 <meta property="og:image" content="http://ook8ztpnr.bkt.clouddn.com/image/blog/%E5%BC%82%E6%AD%A5IO%E6%A8%A1%E5%9E%8B.png">
 <meta property="og:image" content="http://ook8ztpnr.bkt.clouddn.com/image/blog/5%E7%A7%8DIO%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%AF%94%E8%BE%83.png">
-<meta property="og:updated_time" content="2017-04-19T15:46:26.940Z">
+<meta property="og:updated_time" content="2017-04-19T15:56:49.769Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="通用IO模型">
 <meta name="twitter:description" content="本文摘录自《UNIX网络编程卷1》，主要对Unix下常用的I/O模型进行介绍。主要的I/O模型有：  阻塞式I/O（blocking I/O）； 非阻塞式I/O（noblocking I/O）； I/O复用（I/O multiplexing）； 信号驱动式I/O（singal-driven I/O）； 异步I/O（asynchronous I/O）  本文中的例子都是以数据报套接字为例，进行的系统">
@@ -465,6 +465,7 @@
 <li>异步I/O（asynchronous I/O）</li>
 </ul>
 <p>本文中的例子都是以数据报套接字为例，进行的系统调用以读操作为例。</p>
+<a id="more"></a>
 <h3 id="阻塞式I-O模型"><a href="#阻塞式I-O模型" class="headerlink" title="阻塞式I/O模型"></a>阻塞式I/O模型</h3><p>阻塞式I/O（blocking I/O）模型，是最为流行的I/O模型。阻塞式I/O是指当进程进行系统调用时，如果需要进行I/O操作而不能立即返回时，那么这个系统调用会一直到数据报到达且被复制到应用进程的缓冲区或者发生错误时才会返回。阻塞式I/O在系统调用和发生返回这两个时间点之间的所有时间都是被阻塞的。系统调用返回后，进程才开始处理数据。</p>
 <p>阻塞式I/O模型的整个过程如下图所示：</p>
 <p><img src="http://ook8ztpnr.bkt.clouddn.com/image/blog/%E9%98%BB%E5%A1%9E%E5%BC%8FIO%E6%A8%A1%E5%9E%8B.png" alt="01-阻塞式I/O模型"></p>

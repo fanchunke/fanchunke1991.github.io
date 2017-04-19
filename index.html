@@ -453,8 +453,7 @@
 
       
         
-          
-            <p>本文摘录自《UNIX网络编程卷1》，主要对Unix下常用的I/O模型进行介绍。主要的I/O模型有：</p>
+          <p>本文摘录自《UNIX网络编程卷1》，主要对Unix下常用的I/O模型进行介绍。主要的I/O模型有：</p>
 <ul>
 <li>阻塞式I/O（blocking I/O）；</li>
 <li>非阻塞式I/O（noblocking I/O）；</li>
@@ -463,35 +462,13 @@
 <li>异步I/O（asynchronous I/O）</li>
 </ul>
 <p>本文中的例子都是以数据报套接字为例，进行的系统调用以读操作为例。</p>
-<h3 id="阻塞式I-O模型"><a href="#阻塞式I-O模型" class="headerlink" title="阻塞式I/O模型"></a>阻塞式I/O模型</h3><p>阻塞式I/O（blocking I/O）模型，是最为流行的I/O模型。阻塞式I/O是指当进程进行系统调用时，如果需要进行I/O操作而不能立即返回时，那么这个系统调用会一直到数据报到达且被复制到应用进程的缓冲区或者发生错误时才会返回。阻塞式I/O在系统调用和发生返回这两个时间点之间的所有时间都是被阻塞的。系统调用返回后，进程才开始处理数据。</p>
-<p>阻塞式I/O模型的整个过程如下图所示：</p>
-<p><img src="http://ook8ztpnr.bkt.clouddn.com/image/blog/%E9%98%BB%E5%A1%9E%E5%BC%8FIO%E6%A8%A1%E5%9E%8B.png" alt="01-阻塞式I/O模型"></p>
-<h3 id="非阻塞式I-O模型"><a href="#非阻塞式I-O模型" class="headerlink" title="非阻塞式I/O模型"></a>非阻塞式I/O模型</h3><p>非阻塞式I/O（noblocking I/O）模型，和阻塞式I/O模型的应用场景相似。不过与阻塞式I/O模型不同的是，当需要进行I/O操作时，进程会反复进行系统调用，如果没有成功，则直接返回一个错误，直到系统调用成功为止。整个过程叫做轮询（polling）。</p>
-<p>非阻塞式I/O模型的整个过程如下图所示：</p>
-<p><img src="http://ook8ztpnr.bkt.clouddn.com/image/blog/%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8FIO%E6%A8%A1%E5%9E%8B.png" alt="02-非阻塞式I/O模型"></p>
-<h3 id="I-O复用模型"><a href="#I-O复用模型" class="headerlink" title="I/O复用模型"></a>I/O复用模型</h3><p>I/O复用（I/O multiplexing）模型的一个主要特点是可以同时用来检查多个文件描述符的状态。I/O复用模型和非阻塞式I/O模型十分相似，不过区别在于I/O复用模型改进了非阻塞式I/O模型中的轮询过程。非阻塞式I/O模型中的轮询过程需要进程持续轮询内核状态，以检查某个操作是否处于就绪状态，这往往会耗费大量的CPU时间，而且效率不高。I/O复用模型中可以使用select、poll、epoll等函数，改进了轮询的过程。</p>
-<p>I/O复用模型的整个过程如下图所示：</p>
-<p><img src="http://ook8ztpnr.bkt.clouddn.com/image/blog/IO%E5%A4%8D%E7%94%A8%E6%A8%A1%E5%9E%8B.png" alt="03-I/O复用模型"></p>
-<h3 id="信号驱动式I-O"><a href="#信号驱动式I-O" class="headerlink" title="信号驱动式I/O"></a>信号驱动式I/O</h3><p>信号驱动式I/O（singal-driven I/O）模型，是指可以使用信号，让内核在文件描述符处于就绪状态时发送信号通知进程。这种模式首先要建立信号处理程序，当I/O操作完成，内核就会为进程产生一个信号。随后进程就可以进行系统调用处理数据。这种模式的优势在于在等待数据到达期间（不是内核将数据交给进程）进程不被阻塞。</p>
-<p>信号驱动式I/O的整个过程如下图所示：</p>
-<p><img src="http://ook8ztpnr.bkt.clouddn.com/image/blog/%E4%BF%A1%E5%8F%B7%E9%A9%B1%E5%8A%A8%E5%BC%8FIO%E6%A8%A1%E5%9E%8B.png" alt="04-信号驱动式I/O模型"></p>
-<p><strong>注意：</strong> 以上几个模型中均涉及到系统调用，在系统调用时发生了阻塞。我们的例子中都是以读操作为例的，还有其他的操作也会导致阻塞。例如，读操作时，若套接字的接收缓冲区内没有数据可读，则读操作会阻塞；在写操作时，若套接字的发送缓冲区内没有空间写入数据，则写操作也会阻塞。另外还需要注意的一点是，非阻塞I/O模型中的轮询、I/O复用模型中的select/poll、信号驱动I/O模型，虽然不同于阻塞式I/O模型，但是在涉及系统调用（读写操作等）时，都会阻塞。</p>
-<h3 id="异步I-O模型"><a href="#异步I-O模型" class="headerlink" title="异步I/O模型"></a>异步I/O模型</h3><p>异步I/O（asynchronous I/O）模型的工作机制是：告知内核启动某个操作，并让内核在整个操作（包括将数据从内核复制到进程的缓冲区）完成后通知进程。它和信号驱动I/O模型的主要区别在于：信号驱动I/O是由内核告知进程何时可以 <strong>启动</strong> 一个操作，而异步I/O模型则是由内核通知进程何时 <strong>完成</strong> 一个操作。</p>
-<p>异步I/O的整个过程如下图所示：</p>
-<p><img src="http://ook8ztpnr.bkt.clouddn.com/image/blog/%E5%BC%82%E6%AD%A5IO%E6%A8%A1%E5%9E%8B.png" alt="05-异步I/O模型"></p>
-<h3 id="各种模型的比较"><a href="#各种模型的比较" class="headerlink" title="各种模型的比较"></a>各种模型的比较</h3><p>前四种模型的主要区别在于第一阶段（等待数据的过程），第二阶段（内核将数据复制到进程的缓冲区）是一样的。根据POSIX对于同步I/O和异步I/O的定义：</p>
-<ul>
-<li>同步I/O：导致进程阻塞，直到I/O操作完成；</li>
-<li>异步I/O：不导致请求进程阻塞。</li>
-</ul>
-<p>由上面的定义可知，前四种模型（阻塞式I/O、非阻塞式I/O，I/O复用，信号驱动I/O）属于同步I/O，最后一种属于异步I/O。</p>
-<p>关于五种通用模型的主要区别，见下图：</p>
-<p><img src="http://ook8ztpnr.bkt.clouddn.com/image/blog/5%E7%A7%8DIO%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%AF%94%E8%BE%83.png" alt="五种I/O模型的比较"></p>
-<hr>
-<p><strong>版权声明</strong></p>
-<p></p><p style="font-size: 10px; line-height: 1.5; margin-bottom: 0"><a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> by <a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a> is licensed under a <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">Creative Commons BY-NC-ND 4.0 International License</a>.<br><br>由<a href="http://fanchunke.me" style="color:#258FC6">Fan Chunke</a>创作并维护的<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a>博客采用<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:#258FC6" target="_blank" rel="external">创作共用保留署名-非商业-禁止演绎4.0国际许可证</a>。<br><br>本文首发于<a href="http://fanchunke.me" style="color:#258FC6">Learn Python</a> 博客（ <a href="http://fanchunke.me" style="color:#258FC6">http://fanchunke.me</a> ），版权所有，侵权必究。</p><br>本文永久链接：<a href="http://fanchunke.me/Web编程/通用IO模型/">http://fanchunke.me/Web编程/通用IO模型/</a><p></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/Web编程/通用IO模型/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
